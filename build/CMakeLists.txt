@@ -10,20 +10,31 @@ set ( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14" )
 
 set ( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lstdc++" )
 
-#for debug version
+#for debug
 SET( CMAKE_DEBUG_POSTFIX "_d" CACHE STRING "postfix applied to debug build of libraries" )
 
 #SET( CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g" )
 
-#for release version
+#for release
 #SET( CMAKE_RELEASE_POSTFIX "" CACHE STRING "postfix applied to release build of libraries" )
 
 #путь к исполнеямому файлу
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 
-set( SOURCES ../src/main.cpp )
+set( SOURCES ../src/main.cpp
+             ../src/config/server_config.cpp
+             ../src/common/server_loader.cpp
+             ../src/logs/error_log.cpp
+             ../src/connection/tcp_connection_creator.cpp
+             ../src/connection/tcp_connection.cpp
+   )
 
-include_directories ( ../inc )
+include_directories ( ../inc
+                      ../inc/common
+                      ../inc/config
+                      ../inc/logs
+                      ../inc/connection
+                    )
 
 project( ${PROJECT} )
 
