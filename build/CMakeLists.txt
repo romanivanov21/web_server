@@ -27,7 +27,8 @@ set( SOURCES ../src/main.cpp
              ../src/logs/error_log.cpp
              ../src/connection/tcp_connection_creator.cpp
              ../src/connection/tcp_connection.cpp
-   )
+             ../src/config/server_config_exception.cpp
+    )
 
 include_directories ( ../inc
                       ../inc/common

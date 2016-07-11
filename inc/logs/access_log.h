@@ -7,7 +7,7 @@
 class access_log
 {
  public:
-    access_log* get_instance( );
+    access_log& get_instance( );
 
     void set_dir( std::string dir ) noexcept ;
     std::string get_dir( ) const noexcept;
@@ -20,6 +20,4 @@ class access_log
  private:
     access_log( ) { }
     ~access_log( ) { }
-
-    static access_log *acc_log_;
 };

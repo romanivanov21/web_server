@@ -15,7 +15,7 @@ class master_loader
     master_loader( ) { }
     virtual ~master_loader( ) { }
 
-    virtual void get_config( CONFIG_TYPES *cfg_type ) = 0;
+    virtual const CONFIG_TYPES* get_config( ) = 0;
 
     master_loader( const master_loader &copy ) = delete;
     master_loader& operator=( const master_loader &copy ) = delete;

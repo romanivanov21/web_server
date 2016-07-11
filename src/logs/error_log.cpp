@@ -2,14 +2,10 @@
 
 #include <cassert>
 
-error_log* error_log::err_log_ = nullptr;
-
-error_log* error_log::get_instance( )
+error_log& error_log::get_instance( )
 {
-    if( err_log_ == nullptr )
-    {
-        err_log_ = new error_log( );
-    }
+    static error_log err_log;
+    return err_log;
 }
 
 std::string error_log::get_dir( ) const noexcept { return dir_; }

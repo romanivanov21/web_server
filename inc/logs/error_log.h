@@ -12,7 +12,7 @@
 class error_log
 {
  public:
-    error_log* get_instance( );
+    error_log& get_instance( );
     void set_dir( std::string dir );
     std::string get_dir( ) const noexcept;
 
@@ -26,7 +26,6 @@ class error_log
     ~error_log( ) { }
 
     std::string dir_;
-    static error_log* err_log_;
 };
 
 #endif //_ERROR_LOG_H_

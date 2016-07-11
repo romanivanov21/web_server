@@ -1,15 +1,9 @@
 #include "access_log.h"
 
-static access_log* access_log::acc_err_ = nullptr;
-
-access_log* access_log::get_instance( )
+access_log& access_log::get_instance( )
 {
-    if( acc_log_ == nullptr )
-    {
-        acc_log_ = new access_log( );
-    }
-
-    return acc_log_;
+    static access_log acc_log;
+    return acc_log;
 }
 
 void access_log::set_dir( std::string dir ) noexcept
