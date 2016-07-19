@@ -25,16 +25,21 @@ set( SOURCES ../src/main.cpp
              ../src/config/server_config.cpp
              ../src/common/server_loader.cpp
              ../src/logs/error_log.cpp
+             ../src/logs/access_log.cpp
              ../src/connection/tcp_connection_creator.cpp
              ../src/connection/tcp_connection.cpp
              ../src/config/server_config_exception.cpp
-    )
+             ../src/workers/worker_process_creator.cpp
+             ../src/workers/worker_process.cpp
+             ../src/common/current_system_info.cpp
+   )
 
 include_directories ( ../inc
                       ../inc/common
                       ../inc/config
                       ../inc/logs
                       ../inc/connection
+                      ../inc/workers
                     )
 
 project( ${PROJECT} )

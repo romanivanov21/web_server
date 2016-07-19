@@ -7,25 +7,26 @@
 #ifndef _ERROR_LOG_H_
 #define _ERROR_LOG_H_
 
-#include <string>
+#include "server_log.h"
 
-class error_log
+class error_log : public server_log
 {
  public:
-    error_log& get_instance( );
-    void set_dir( std::string dir );
-    std::string get_dir( ) const noexcept;
 
-    void create_log_file( );
-    void write( const std::string &str );
+    ~error_log( ) { }
+
+    static error_log& get_instance() noexcept;
+    void create_log_file( const std::string &dir ) override;
+    void write_log( const std::string &log ) override;
 
     error_log( const error_log& copy ) = delete;
     error_log& operator=( const error_log& copy ) = delete;
- private:
+ protected:
     error_log( ) { }
-    ~error_log( ) { }
 
+ private:
     std::string dir_;
+    FILE *h_file_;
 };
 
 #endif //_ERROR_LOG_H_

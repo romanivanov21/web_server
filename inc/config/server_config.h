@@ -19,7 +19,7 @@ class server_config
 
     ~server_config( );
 
-    static server_config& get_instance( );
+    static server_config& get_instance() noexcept;
 
     void load_cfg_file( const std::string &file_name );
     const CONFIG_TYPES* get_config( ) const;
