@@ -13,7 +13,7 @@ server_config::~server_config( )
     delete cfg_;
 }
 
-server_config& server_config::get_instance( )
+server_config& server_config::get_instance( ) noexcept
 {
     static server_config s_cfg_;
     return s_cfg_;

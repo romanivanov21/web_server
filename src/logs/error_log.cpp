@@ -2,27 +2,18 @@
 
 #include <cassert>
 
-error_log& error_log::get_instance( )
+error_log& error_log::get_instance() noexcept
 {
     static error_log err_log;
     return err_log;
 }
 
-std::string error_log::get_dir( ) const noexcept { return dir_; }
-
-void error_log::set_dir( std::string dir )
+void error_log::create_log_file( const std::string &dir )
 {
-    assert( !dir.empty() );
-    dir_ = dir;
+
 }
 
-void error_log::create_log_file( )
+void error_log::write_log( const std::string &log )
 {
-    throw;
-}
 
-void error_log::write( const std::string &str )
-{
-    assert( !str.empty() );
-    throw;
 }

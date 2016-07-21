@@ -11,8 +11,6 @@
 #include "server_config.h"
 #include "connection.h"
 
-#include <memory>
-
 class server_loader : public  master_loader
 {
  public:
