@@ -7,22 +7,33 @@
 #include "types.h"
 #include "access_log.h"
 #include "error_log.h"
-#include "master_loader.h"
-#include "server_loader.h"
-#include "connection_creator.h"
-#include "tcp_connection_creator.h"
+#include "server_config.h"
+#include "server_config_exception.h"
 #include "worker_process.h"
-#include "worker_pocess_creator.h"
-#include "current_system_info.h"
+#include "worker_process_creator.h"
+#include "master_process_creator.h"
 
 #include <vector>
 #include <algorithm>
 #include <memory>
+#include <iostream>
 
 int main( int argc, char **argv )
 {
 	//иницаилизация системы конфигурации сервера
 	server_config &config = server_config::get_instance();
+	try
+	{
+		config.load_config_file("/..");
+	}
+	catch( server_config_exception &ex )
+	{
+		std::cout<<ex.what()<<std::endl;
+	}
+	catch(...)
+	{
+		std::cout<<"Config file error"<<std::endl;
+	}
 
 	//инициализации системы логов сервера
 	access_log& server_access_log = access_log::get_instance();
@@ -31,34 +42,18 @@ int main( int argc, char **argv )
 	error_log& server_error_log = error_log::get_instance();
 	server_error_log.create_log_file( config.get_config()->ERROR_LOG_ );
 
-	//инициализации системы создания сетевого соединения
-	std::shared_ptr<connection_creator> connection_creator( new tcp_connection_creator( ) );
-	std::shared_ptr<connection> tcp_connect ( connection_creator->get_connection() );
-
-	//создание процессов
-	std::shared_ptr<worker_process_creator> process_creator( new worker_process_creator( ) );
-	auto *worker_processes = new std::vector<process* >();
-	for( auto i = 0; i < current_system_info::get_instance().get_proc_kernel_count(); i++ )
+	//создание мастер процесса
+	std::shared_ptr<process_creator> m_process_creator( new master_process_creator() );
+	pid_t pid = m_process_creator->create_process();
+	if( !pid )
 	{
-		worker_processes->push_back( process_creator->get_process() );
+		process* master_process = m_process_creator->get_process();
+		master_process->start_process();
 	}
-
-	//Запуск процессов
-	std::for_each( worker_processes->begin(), worker_processes->end(), [] ( process *item )
+	else if( pid == -1 )
 	{
-		if( item->start_process() )
-		{
-			access_log::get_instance().write_log("New worker process was started.");
-		}
-		else
-		{
-			error_log::get_instance().write_log("Failed to create new worker process");
-		}
-	});
-
-	//удаление процессов
-	std::for_each( worker_processes->begin(), worker_processes->end(), []( auto item ) { delete item; } );
-	delete worker_processes;
+		std::cout<<"Can not create master process"<<std::endl;
+	}
 
 	return 0;
 }

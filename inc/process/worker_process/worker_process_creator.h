@@ -11,10 +11,11 @@
 
 class worker_process_creator : public process_creator
 {
- public:
+public:
     worker_process_creator();
     ~worker_process_creator();
 
+    pid_t create_process() noexcept override;
     process* get_process() noexcept override;
 };
 

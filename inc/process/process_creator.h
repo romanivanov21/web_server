@@ -9,12 +9,15 @@
 
 #include "process.h"
 
+#include <sys/types.h>
+
 class process_creator
 {
- public:
+public:
     process_creator() { }
     virtual ~process_creator() { }
 
+    virtual pid_t create_process() noexcept = 0;
     virtual process* get_process() noexcept = 0;
 
     process_creator( const process_creator &copy ) = delete;
