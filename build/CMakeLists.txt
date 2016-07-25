@@ -34,6 +34,10 @@ set( SOURCES ../src/main.cpp
              ../src/process/master_process/master_process.cpp
              ../src/process/master_process/master_process_creator.cpp
              ../src/process/master_process/master_process_manager.cpp
+<<<<<<< HEAD
+=======
+             ../src/daemon/daemon.cpp
+>>>>>>> origin/daemon
     )
 
 include_directories ( ../inc
@@ -44,6 +48,10 @@ include_directories ( ../inc
                       ../inc/process/master_process
                       ../inc/process/worker_process
                       ../inc/process
+<<<<<<< HEAD
+=======
+                      ../inc/daemon
+>>>>>>> origin/daemon
                     )
 
 project( ${PROJECT} )

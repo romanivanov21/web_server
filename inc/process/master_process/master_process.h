@@ -13,19 +13,30 @@
 class master_process : public process
 {
 public:
+<<<<<<< HEAD
+=======
+    master_process();
+>>>>>>> origin/daemon
     ~master_process();
 
     void start_process() noexcept override;
     void set_config() noexcept;
+<<<<<<< HEAD
 
     static master_process* get_instance() noexcept;
+=======
+    static void sighandler(int signum);
+>>>>>>> origin/daemon
 
     master_process( const master_process &copy ) = delete;
     master_process& operator=( const master_process &copy ) = delete;
 
 private:
+<<<<<<< HEAD
     master_process();
 private:
+=======
+>>>>>>> origin/daemon
     process_manager *manager_;
 };
 

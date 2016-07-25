@@ -4,6 +4,7 @@
  *  Описание: реализация функции main - точка входа в приложение
  */
 
+<<<<<<< HEAD
 #include "types.h"
 #include "access_log.h"
 #include "error_log.h"
@@ -16,10 +17,16 @@
 #include <vector>
 #include <algorithm>
 #include <memory>
+=======
+#include "daemon.h"
+
+#include <stdexcept>
+>>>>>>> origin/daemon
 #include <iostream>
 
 int main( int argc, char **argv )
 {
+<<<<<<< HEAD
 	//иницаилизация системы конфигурации сервера
 	server_config &config = server_config::get_instance();
 	try
@@ -54,6 +61,30 @@ int main( int argc, char **argv )
 	{
 		std::cout<<"Can not create master process"<<std::endl;
 	}
+=======
+	try
+	{
+		daemon::init_config( );
+		daemon::init_access_log( );
+		daemon::init_error_log( );
+	}
+	catch(...)
+	{
+
+	}
+	//сделай сингтон
+	auto *dem = new daemon( );
+
+	try
+	{
+		dem->start_daemon( );
+	}
+	catch( std::runtime_error &ex )
+	{
+		std::cout<<ex.what()<<std::endl;
+	}
+	delete dem;
+>>>>>>> origin/daemon
 
 	return 0;
 }
