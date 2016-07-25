@@ -21,7 +21,7 @@ class server_config
 
     static server_config& get_instance() noexcept;
 
-    void load_cfg_file( const std::string &file_name );
+    void load_config_file( const std::string &file_name );
     const CONFIG_TYPES* get_config( ) const;
 
     server_config( const server_config &copy ) = delete;

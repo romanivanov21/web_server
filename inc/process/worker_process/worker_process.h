@@ -11,11 +11,11 @@
 
 class worker_process : public process
 {
- public:
+public:
     worker_process();
     ~worker_process();
 
-    bool start_process() override;
+    void start_process() noexcept override;
 
     worker_process( const worker_process &copy ) = delete;
     worker_process& operator=( const worker_process &copy ) = delete;

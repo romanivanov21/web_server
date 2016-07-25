@@ -8,7 +8,6 @@ worker_process::~worker_process()
 {
 }
 
-bool worker_process::start_process( )
+void worker_process::start_process() noexcept
 {
-    return false;
 }
