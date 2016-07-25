@@ -1,10 +1,7 @@
 #include "master_process_creator.h"
 #include "master_process.h"
 
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/daemon
 #include <sys/types.h>
 #include <unistd.h>
 
@@ -23,9 +20,5 @@ pid_t master_process_creator::create_process() noexcept
 
 process* master_process_creator::get_process() noexcept
 {
-<<<<<<< HEAD
-    return master_process::get_instance();
-=======
     return new master_process();
->>>>>>> origin/daemon
 }
