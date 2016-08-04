@@ -30,11 +30,11 @@ void server_config::load_config_file( const std::string &file_name )
     try
     {
         cfg_->SERVER_NAME_ = get_server_name( file_name );
-        cfg_ -> IP_ADDRESS_ = get_ip_address( file_name );
-        cfg_ -> PORT_ = get_port( file_name );
-        cfg_ -> DOCUMENT_ROOT_ = get_document_root( file_name );
-        cfg_ -> ERROR_LOG_ = get_error_log( file_name );
-        cfg_ -> ACCESS_LOG_ = get_access_log( file_name );
+        cfg_->IP_ADDRESS_ = get_ip_address( file_name );
+        cfg_->PORT_ = get_port( file_name );
+        cfg_->DOCUMENT_ROOT_ = get_document_root( file_name );
+        cfg_->ERROR_LOG_ = get_error_log( file_name );
+        cfg_->ACCESS_LOG_ = get_access_log( file_name );
     }
     catch( const server_config_exception& ex )
     {

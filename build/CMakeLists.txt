@@ -34,8 +34,9 @@ set( SOURCES ../src/main.cpp
              ../src/process/master_process/master_process.cpp
              ../src/process/master_process/master_process_creator.cpp
              ../src/process/master_process/master_process_manager.cpp
-        ../src/daemon/daemon.cpp
-        )
+             ../src/daemon/daemon.cpp
+             ../src/common/event_dispatcher.cpp
+    )
 
 include_directories ( ../inc
                       ../inc/common
