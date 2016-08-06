@@ -3,6 +3,7 @@
  *
  *  Описание: реализация функции main - точка входа в приложение
  */
+
 #include "daemon.h"
 
 #include <stdexcept>
@@ -12,7 +13,7 @@ int main( int argc, char **argv )
 {
 	try
 	{
-		daemon::init_config( "/home/" );
+		daemon::init_config( );
 		daemon::init_access_log( );
 		daemon::init_error_log( );
 	}

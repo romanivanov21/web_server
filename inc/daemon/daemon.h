@@ -1,8 +1,3 @@
-/**
- *  Файл: types.h
- *
- *  Описание: Класс для запуска демона
- */
 #ifndef _DAEMON_H_
 #define _DAEMON_H_
 
@@ -18,7 +13,7 @@ public:
     daemon();
     ~daemon();
 
-    static void init_config( const std::string &dir );
+    static void init_config();
     static void init_access_log();
     static void init_error_log();
 
@@ -27,7 +22,7 @@ public:
 
 private:
     void write_pid( pid_t pid ) const;
-    static void sighandler( int signum );
+    void sighandler( int signum );
     void print_to_console( const std::string& msg) const;
 };
 

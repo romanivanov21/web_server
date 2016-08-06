@@ -3,14 +3,16 @@
 #include "server_config.h"
 #include "access_log.h"
 #include "error_log.h"
+#include "types.h"
 
 #include <fcntl.h>
+#include <exception>
+#include <string>
 #include <cstring>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <stdexcept>
 #include <memory>
-#include <cassert>
 
 daemon::daemon( )
 {
@@ -20,15 +22,14 @@ daemon::~daemon( )
 {
 }
 
-void daemon::init_config( const std::string& dir )
+void daemon::init_config( )
 {
-    assert( !dir.empty() );
     try
     {
         //!TODO функция не реализована
-        server_config::get_instance( ).load_config_file( dir );
+        server_config::get_instance( ).load_config_file( "/../" );
     }
-    catch( ... )
+    catch(...)
     {
         throw;
     }
@@ -67,7 +68,8 @@ void daemon::write_pid( int pid ) const
     if( fd > 0 )
     {
         const std::string str_pid = std::to_string( pid );
-        if( ( write( fd, str_pid.c_str( ), str_pid.size() ) != str_pid.size() ) )
+        int res = write( fd, str_pid.c_str( ), str_pid.size() );
+        if( res != str_pid.size() )
         {
             close( fd );
             throw std::runtime_error("Can not save pid to file");
@@ -107,7 +109,7 @@ void daemon::start_daemon()
             break;
 
         case -1:
-           throw std::runtime_error("fork error");
+            throw std::runtime_error("fork error");
             break;
 
         default:
