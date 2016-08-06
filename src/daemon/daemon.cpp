@@ -3,26 +3,24 @@
 #include "server_config.h"
 #include "access_log.h"
 #include "error_log.h"
-#include "types.h"
 
+#include <iostream>
 #include <fcntl.h>
-#include <exception>
-#include <string>
 #include <cstring>
 #include <unistd.h>
 #include <sys/wait.h>
-#include <stdexcept>
 #include <memory>
 
-daemon::daemon( )
+
+daemon_tool::daemon_tool( )
 {
 }
 
-daemon::~daemon( )
+daemon_tool::~daemon_tool( )
 {
 }
 
-void daemon::init_config( )
+void daemon_tool::init_config( )
 {
     try
     {
@@ -35,7 +33,7 @@ void daemon::init_config( )
     }
 }
 
-void daemon::init_access_log( )
+void daemon_tool::init_access_log( )
 {
     try
     {
@@ -48,7 +46,7 @@ void daemon::init_access_log( )
     }
 }
 
-void daemon::init_error_log( )
+void daemon_tool::init_error_log( )
 {
     try
     {
@@ -61,65 +59,114 @@ void daemon::init_error_log( )
     }
 }
 
-void daemon::write_pid( int pid ) const
+void daemon_tool::start_daemon()
 {
-    const std::string num_pid = "/var/run/web-server.pid";
-    int fd = open(num_pid.c_str(), O_WRONLY | O_CREAT | O_TRUNC, 0664);
-    if( fd > 0 )
-    {
-        const std::string str_pid = std::to_string( pid );
-        int res = write( fd, str_pid.c_str( ), str_pid.size() );
-        if( res != str_pid.size() )
-        {
-            close( fd );
-            throw std::runtime_error("Can not save pid to file");
-        }
-        close( fd );
-    }
-}
+    pid_t pid, sid;
 
-void daemon::sighandler(int signum)
-{
-    waitpid(0, 0, WNOHANG);
-}
+    pid = fork();
 
-void daemon::start_daemon()
-{
-    pid_t pid = default_error_code;
-    pid_t sid = default_error_code;
-
-    struct sigaction sa;
-
-    std::shared_ptr<process_creator> proc_creator( new master_process_creator() );
-    pid = proc_creator->create_process();
-    std::shared_ptr<process> proc (proc_creator->get_process() );
-
-    switch ( pid )
-    {
-        //кооиентарий
+    switch (pid) {
         case 0:
-            try
+        {
+            sid = setsid();
+            if(sid == -1)
             {
-                proc->start_process( );
+                throw std::runtime_error(strerror(errno));
             }
-            catch( std::runtime_error& ex )
-            {
-                throw ex;
-            }
+
+            chdir("/");
+
+            close(STDIN_FILENO);
+            close(STDOUT_FILENO);
+            close(STDERR_FILENO);
+
+            monitor_process();
+
             break;
+        }
 
         case -1:
-           throw std::runtime_error("fork error");
+        {
             break;
+        }
 
         default:
-            write_pid( pid );
-            print_to_console( "[ ok ] PID=" + std::to_string( pid ) );
+        {
+            std::string pid_filename = "/var/run/echo-server.pid";  //Создать файл конфигурации, откуда будет парситься путь!!!
+            write_pid(pid, pid_filename);
             break;
+        }
     }
 }
 
-void daemon::print_to_console( const std::string &msg) const
+void daemon_tool::monitor_process(void)
 {
+    sigset_t sigset;
+    siginfo_t siginfo;
 
+    setup_signal(sigset, siginfo);
+
+    std::shared_ptr<process_creator> process_creator(new master_process_creator());
+    std::shared_ptr<process> process(process_creator->get_process());
+
+    pid_t pid = process_creator->create_process();
+
+    switch(pid)
+    {
+        case 0:
+        {
+            process->start_process();
+            break;
+        }
+
+        case -1:
+        {
+            break;
+        }
+
+        default:
+        {
+            // ожидаем поступление сигнала
+            sigwaitinfo(&sigset, &siginfo);
+
+            if(siginfo.si_signo == SIGCHLD)   // если пришел сигнал от потомка
+            {
+                waitpid(pid, 0, WNOHANG);
+                exit(0);
+            }
+            else if(siginfo.si_signo == SIGTERM) // если пришел сигнал о завершении программы
+            {
+                kill(pid, SIGKILL);
+                exit(0);
+            }
+            break;
+        }
+    }
+}
+
+void daemon_tool::write_pid(const int pid, const std::string & pid_filename) const
+{
+    int fd = open(pid_filename.c_str(), O_WRONLY | O_CREAT | O_TRUNC, 0664);
+    std::string str_pid = std::to_string(pid);
+    write(fd, str_pid.c_str(), str_pid.size());
+    close(fd);
+}
+
+void daemon_tool::setup_signal(sigset_t & sigset, siginfo_t & siginfo)
+{
+    // настраиваем сигналы которые будем обрабатывать
+    sigemptyset(&sigset);
+
+    // сигнал запроса завершения процесса
+    sigaddset(&sigset, SIGTERM);
+
+    // сигнал посылаемый при изменении статуса дочернего процесса
+    sigaddset(&sigset, SIGCHLD);
+
+    sigprocmask(SIG_BLOCK, &sigset, NULL);
+}
+
+void daemon_tool::print_to_console( const std::string &msg) const
+{
+    std::cout << msg << std::endl;
 }

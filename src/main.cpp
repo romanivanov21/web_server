@@ -8,31 +8,31 @@
 
 #include <stdexcept>
 #include <iostream>
+#include <memory>
 
 int main( int argc, char **argv )
 {
 	try
 	{
-		daemon::init_config( );
-		daemon::init_access_log( );
-		daemon::init_error_log( );
+		daemon_tool::init_config( );
+		daemon_tool::init_access_log( );
+		daemon_tool::init_error_log( );
 	}
 	catch(...)
 	{
 
 	}
-	//сделай сингтон
-	auto *dem = new daemon( );
 
+	//сделай сингтон
+	std::shared_ptr<daemon_tool> daemon(new daemon_tool);
 	try
 	{
-		dem->start_daemon( );
+		daemon->start_daemon();
 	}
-	catch( std::runtime_error &ex )
+	catch (std::runtime_error & ex)
 	{
-		std::cout<<ex.what()<<std::endl;
+		std::cout << ex.what() << std::endl;
 	}
-	delete dem;
 
 	return 0;
 }

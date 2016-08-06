@@ -1,17 +1,14 @@
 #ifndef _DAEMON_H_
 #define _DAEMON_H_
 
-#include "process_creator.h"
-#include "process.h"
-
-
 #include <string>
+#include <signal.h>
 
-class daemon
+class daemon_tool
 {
 public:
-    daemon();
-    ~daemon();
+    daemon_tool();
+    ~daemon_tool();
 
     static void init_config();
     static void init_access_log();
@@ -21,9 +18,13 @@ public:
 
 
 private:
-    void write_pid( pid_t pid ) const;
-    void sighandler( int signum );
+    daemon_tool(const daemon_tool &) = delete;
+    daemon_tool & operator=(const daemon_tool &) = delete;
+
+    void monitor_process();
     void print_to_console( const std::string& msg) const;
+    void setup_signal(sigset_t & sigset, siginfo_t & siginfo);
+    void write_pid(const int pid, const std::string & pid_name) const;
 };
 
 #endif //_DAEMON_H_

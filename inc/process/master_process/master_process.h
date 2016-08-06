@@ -4,8 +4,8 @@
  * Описание:
  */
 
-#include "process_manager.h"
 #include "process.h"
+#include "process_manager.h"
 
 #ifndef _MASTER_PROCESS_H_
 #define _MASTER_PROCESS_H_
@@ -18,7 +18,6 @@ public:
 
     void start_process() noexcept override;
     void set_config() noexcept;
-    static void sighandler(int signum);
 
     master_process( const master_process &copy ) = delete;
     master_process& operator=( const master_process &copy ) = delete;
