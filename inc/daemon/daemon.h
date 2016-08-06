@@ -18,13 +18,6 @@ public:
     daemon();
     ~daemon();
 
-    /**
-     * @brief чтение и получение конфигурационного файла
-     *
-     * @param dir путь к конфиг файлу
-     *
-     * @throw std::runtime_exception
-     */
     static void init_config( const std::string &dir );
     static void init_access_log();
     static void init_error_log();

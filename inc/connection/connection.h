@@ -1,7 +1,7 @@
 /**
  *  Файл: connection.h
  *
- *  Описание:
+ *  Описание: абстрактный класс, описывающий сетевое соединение
  */
 
 #ifndef _CONNECTION_H_
@@ -10,8 +10,8 @@
 class connection
 {
  public:
-    connection( ) { }
-    virtual ~connection( ) { }
+    connection() = default;
+    virtual ~connection() = default;
 
     connection( const connection &copy ) = delete;
     connection& operator=( const connection &copy ) = delete;

@@ -1,3 +1,9 @@
+/**
+ *  Файл: delegete_base.h
+ *
+ *  Описание: Базовый класс реализации delegete
+ */
+
 #ifndef _DELEGATE_BASE_H_
 #define _DELEGATE_BASE_H_
 

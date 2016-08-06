@@ -1,8 +1,9 @@
 /**
  *   Файл: event_dispatcher.h
  *
- *	 Описание: Реализация класса диспейчер событий
+ *   Описание: Реализация класса диспейчер событий
  */
+
 #ifndef _EVENT_DISPATCHER_H_
 #define _EVENT_DISPATCHER_H_
 
@@ -28,7 +29,7 @@ protected:
      * @return void
      */
     template<class T>
-    void add_event( event e, T* delegate ) noexcept;
+    void add_event( event e, T* del) noexcept;
 
     /**
      * @brief отписка от события

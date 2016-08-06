@@ -8,18 +8,15 @@ access_log& access_log::get_instance( ) noexcept
     return log;
 }
 
-void access_log::create_log_file( const std::string &dir )
+void access_log::save_log( const std::string &msg )
 {
-    dir_ = dir;
+    assert( !msg.empty() );
+    assert( file_name_.empty() );
+
+    write_log_file( create_log_struct( msg ) );
 }
 
-void access_log::write_log( const std::string &log )
+const std::string& access_log::create_log_struct( const std::string &msg ) noexcept
 {
-    assert( dir_.empty() );
-
-    if( ( h_file_ = fopen( dir_.c_str(), "w" ) ) )
-    {
-        fwrite( log.c_str(), 1, log.length(), h_file_ );
-        fclose( h_file_ );
-    }
+    return msg;
 }

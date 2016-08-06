@@ -1,7 +1,7 @@
 /**
  * Флайл: worker_process.h
  *
- * Описание:
+ * Описание: класс реализющий worker процесс
  */
 
 #ifndef _WORKER_PROCESS_H_
@@ -16,6 +16,9 @@ public:
     worker_process();
     ~worker_process();
 
+    /**
+     * @brief точка входа в worker процесс
+     */
     void start_process() noexcept override;
 
     worker_process( const worker_process &copy ) = delete;

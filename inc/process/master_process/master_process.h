@@ -1,7 +1,7 @@
 /**
  * Флайл: master_process.h
  *
- * Описание:
+ * Описание: Класс реализует мастер процесс
  */
 
 #include "process_manager.h"
@@ -14,8 +14,11 @@ class master_process : public process
 {
 public:
     master_process();
-    ~master_process();
+    ~master_process() = default;
 
+    /**
+     * @brief точка входа в мастер процесс
+     */
     void start_process() noexcept override;
     void set_config() noexcept;
     static void sighandler(int signum);

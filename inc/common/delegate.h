@@ -1,8 +1,9 @@
 /**
  *	Файл: delegate.h
- *	Описание: Реализация делегата на основе std::function
  *
+ *	Описание: Реализация делегата на основе std::function
  */
+
 #ifndef _DELEGATE_H_
 #define _DELEGATE_H_
 
@@ -19,12 +20,13 @@ class delegate<void( Args... )> : public delegate_base
 {
 public:
     typedef std::function< void(Args...) > func;
+
 public:
     /**
      * @param вызываемя функция
      */
     delegate( func f ) noexcept : f_( f ) { }
-    ~delegate() noexcept { }
+    ~delegate() = default;
 
     /**
      * @brief определние оператора (), чтобы
@@ -32,7 +34,6 @@ public:
      *		  функциональным объектом
      *
      * @param аргументы вызываемой функции
-     * @return void
      */
     virtual void operator() ( Args... args ) {  f_( args ... ); }
 

@@ -16,13 +16,29 @@
 class server_config
 {
  public:
+    ~server_config() = default;
 
-    ~server_config( );
-
+    /**
+     * @brief инстанцирование класса singleton
+     *
+     * @return ссылка на единственный экземпля класса
+     */
     static server_config& get_instance() noexcept;
 
+    /**
+     * @brief загрузка и чтение конфиг файла
+     * @param путь до конфиг файла
+     *
+     * @throw server_config_exception
+     */
     void load_config_file( const std::string &file_name );
-    const CONFIG_TYPES* get_config( ) const;
+
+    /**
+     * @brief полчение указателя на структуру c конфигом
+     *
+     * @return указатель на CONFIG
+     */
+    const CONFIG_TYPES* get_config() const noexcept;
 
     server_config( const server_config &copy ) = delete;
     server_config& operator=( const server_config &copy ) = delete;
@@ -36,9 +52,9 @@ class server_config
     const std::string get_access_log( const std::string &file_name );
 
  private:
-    server_config( );
+    server_config() = default;
 
  private:
-    CONFIG_TYPES *cfg_;
+    CONFIG_TYPES cfg_;
 };
 #endif //_SERVER_CONFIG_H_

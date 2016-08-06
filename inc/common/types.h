@@ -9,7 +9,7 @@
 
 #include <string>
 
-static int default_error_code = -1;
+static const int default_error_code = -1;
 
 struct CONFIG_TYPES
 {
