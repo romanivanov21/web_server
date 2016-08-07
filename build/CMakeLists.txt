@@ -19,7 +19,7 @@ SET( CMAKE_DEBUG_POSTFIX "_d" CACHE STRING "postfix applied to debug build of li
 #SET( CMAKE_RELEASE_POSTFIX "" CACHE STRING "postfix applied to release build of libraries" )
 
 #путь к исполнеямому файлу
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin )
 
 set( SOURCES ../src/main.cpp
              ../src/config/server_config.cpp
@@ -37,6 +37,7 @@ set( SOURCES ../src/main.cpp
              ../src/daemon/daemon.cpp
              ../src/common/event_dispatcher.cpp
              ../src/logs/server_log.cpp
+             ../src/common/embedding_python_api.cpp
     )
 
 include_directories ( ../inc
@@ -57,4 +58,6 @@ source_group ( "Header Files" FILES ${HEADERS} )
 source_group ( "Source Files" FILES ${SOURCES} )
 
 add_executable( ${PROJECT} ${HEADRES} ${SOURCES} )
+
+target_link_libraries( ${PROJECT} python2.7 )
 
