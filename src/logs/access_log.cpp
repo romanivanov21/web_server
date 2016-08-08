@@ -1,25 +1,41 @@
 #include "access_log.h"
 
-#include <cassert>
+access_log * access_log::log = 0;
 
-access_log& access_log::get_instance( ) noexcept
+access_log::access_log()
 {
-    static access_log log;
+}
+
+access_log::~access_log()
+{
+    delete log;
+}
+
+access_log * access_log::get_instance() noexcept
+{
+    if (!log)
+        log = new access_log;
+
     return log;
 }
 
-void access_log::create_log_file( const std::string &dir )
+void access_log::set_log_dir(const std::string & dir)
 {
     dir_ = dir;
 }
 
-void access_log::write_log( const std::string &log )
+void access_log::create_log_file(void) const
 {
-    assert( dir_.empty() );
+}
 
-    if( ( h_file_ = fopen( dir_.c_str(), "w" ) ) )
-    {
-        fwrite( log.c_str(), 1, log.length(), h_file_ );
-        fclose( h_file_ );
-    }
+void access_log::open_log_file(void)
+{
+}
+
+void access_log::write_to_log_file(const std::string & msg) const
+{
+}
+
+void access_log::close_log_file(void)
+{
 }

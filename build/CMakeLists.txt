@@ -28,6 +28,8 @@ set( SOURCES ../src/main.cpp
              ../src/connection/tcp_connection_creator.cpp
              ../src/connection/tcp_connection.cpp
              ../src/config/server_config_exception.cpp
+             ../src/process/daemon_process/daemon_process.cpp
+             ../src/process/daemon_process/daemon_process_creator.cpp
              ../src/process/worker_process/worker_process_creator.cpp
              ../src/process/worker_process/worker_process.cpp
              ../src/common/current_system_info.cpp
@@ -42,6 +44,7 @@ include_directories ( ../inc
                       ../inc/config
                       ../inc/logs
                       ../inc/connection
+                      ../inc/process/daemon_process
                       ../inc/process/master_process
                       ../inc/process/worker_process
                       ../inc/process

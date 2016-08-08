@@ -16,15 +16,11 @@ public:
 
     void start_daemon();
 
-
-private:
     daemon_tool(const daemon_tool &) = delete;
     daemon_tool & operator=(const daemon_tool &) = delete;
+private:
+    void write_pid(const int pid, const std::string & pid_name);
 
-    void monitor_process();
-    void print_to_console( const std::string& msg) const;
-    void setup_signal(sigset_t & sigset, siginfo_t & siginfo);
-    void write_pid(const int pid, const std::string & pid_name) const;
 };
 
 #endif //_DAEMON_H_

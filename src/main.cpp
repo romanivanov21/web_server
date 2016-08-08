@@ -23,7 +23,6 @@ int main( int argc, char **argv )
 
 	}
 
-	//сделай сингтон
 	std::shared_ptr<daemon_tool> daemon(new daemon_tool);
 	try
 	{
