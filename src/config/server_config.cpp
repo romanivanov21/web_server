@@ -13,7 +13,7 @@ server_config::~server_config( )
     delete cfg_;
 }
 
-server_config& server_config::get_instance( )
+server_config& server_config::get_instance( ) noexcept
 {
     static server_config s_cfg_;
     return s_cfg_;
@@ -24,13 +24,12 @@ const CONFIG_TYPES* server_config::get_config( ) const
     return cfg_;
 }
 
-void server_config::load_cfg_file( const std::string &file_name )
+void server_config::load_config_file( const std::string &file_name )
 {
     assert( !file_name.empty() );
-
     try
     {
-        cfg_ -> SERVER_NAME_ = get_server_name( file_name );
+        cfg_->SERVER_NAME_ = get_server_name( file_name );
         cfg_ -> IP_ADDRESS_ = get_ip_address( file_name );
         cfg_ -> PORT_ = get_port( file_name );
         cfg_ -> DOCUMENT_ROOT_ = get_document_root( file_name );

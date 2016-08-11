@@ -1,17 +1,22 @@
 #include "access_log.h"
 
-access_log& access_log::get_instance( )
+#include <cassert>
+
+access_log & access_log::get_instance( ) noexcept
 {
-    static access_log acc_log;
-    return acc_log;
+    static access_log log;
+    return log;
 }
 
-void access_log::set_dir( std::string dir ) noexcept
+void access_log::save_log( const std::string &msg )
 {
+    assert( !msg.empty() );
+    assert( file_name_.empty() );
 
+    write_log_file( create_log_struct( msg ) );
 }
 
-std::string access_log::get_dir( ) const noexcept
+const std::string& access_log::create_log_struct( const std::string &msg ) noexcept
 {
-
+    return msg;
 }
