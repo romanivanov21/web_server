@@ -1,74 +1,52 @@
-#!/usr/bin/env bash
+#!/bin/sh
+# echo-server daemon
 
-PID_FILE=""
-CONFIG_FILE=""
-ERROR_LOG_FILE=""
-ACCESS_LOG_FILE=""
+NAME=echo-server
+PATH_DAEMON=/usr/local/bin/
+DAEMON=$NAME
+PATH_PIDFILE=/var/run/
+PIDFILE=$NAME.pid
+#SCRIPTNAME=/etc/init.d/$NAME
 
-server_start()
-{
-    echo "start"
-}
+case "$1" in 
 
-server_stop()
-{
-    #if [ -e ${PID_FILE} ]
-    #   then
-    #           _pid=$(cat ${PID_FILE})
-    #           kill $_pid
-    #           rt=$?
-    #           if [ "$rt" == "0" ]
-    #           then
-    #                    echo "Daemon stop"
-    #            else
-    #                    echo "Error stop daemon"
-    #            fi
-    #    else
-    #            echo "Daemon is't running"
-    #    fi
-    echo "stop"
-}
+    start) 
+        $DAEMON
+        printf "%-50s\n" "Starting $DAEMON..."
+        ;;
 
-server_restart()
-{
-    server_stop
-    server_start
-}
+    status)
+        printf "%-50s" "Checking $DAEMON..."
+        cd $PATH_PIDFILE
+        if [ -f $PIDFILE ]; then
+            PID=$(cat $PIDFILE)
+            if [ -z "`ps axf | grep ${PID} | grep -v grep`" ]; then
+                printf "%s\n" "Process dead but pidfile exists"
+            else
+                echo "Running"
+            fi
+        else
+            printf "%s\n" "Service not running"
+        fi
+        ;;
 
-usage()
-{
-    echo "$0(start|stop|restart)"
-}
+    stop) 
+        cd $PATH_PIDFILE
+        kill $(cat $PIDFILE)
+        printf "%-50s\n" "[ ok ] PID=$(cat $PIDFILE) kill"
+        rm -f $PIDFILE
+        printf "%-50s\n" "Stopping $DAEMON..."
+        ;;
 
-#проверка переменных окружений и нужных файлов
-init()
-{
-    PID_FILE="/etc/init.d/web_server/pid"
-}
+    restart)
+        sh $0 stop
+        sh $0 start
+        ;;
 
-get_config()
-{
-    echo "get config"
-}
-
-#инициализация
-if ! [ init ]; then
-    echo "install error"
-
-    exit
-    fi
-
-case $1 in
-    "start" )
-            server_start
-            ;;
-    "stop" )
-            server_stop
-            ;;
-    "restart" )
-            server_restart
-            ;;
     *)
-            usage
-            ;;
+        echo "Usage: $0 {status|start|stop|restart}"
+        exit 1
+
 esac
+
+exit 0
