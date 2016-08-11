@@ -1,3 +1,4 @@
+#include "types.h"
 #include "process.h"
 #include "daemon_process.h"
 #include "process_creator.h"
@@ -11,13 +12,13 @@
 
 void daemon_process::start_process()
 {
-    pid_t sid;
+    pid_t sid = default_error_code;
 
     sigset_t sigset;
     siginfo_t siginfo;
 
     sid = setsid();
-    if(sid == -1)
+    if(sid == default_error_code)
     {
         throw std::runtime_error(strerror(errno));
     }
@@ -30,20 +31,20 @@ void daemon_process::start_process()
 
     setup_signal(sigset, siginfo);
 
-    std::shared_ptr<process_creator> process_creator(new master_process_creator());
-    std::shared_ptr<process> process(process_creator->get_process());
+    std::unique_ptr<process_creator> process_creator(new master_process_creator());
+    std::unique_ptr<process> process(process_creator->get_process());
 
     pid_t pid = process_creator->create_process();
 
     switch(pid)
     {
-        case 0:
+        case CHILD:
         {
             process->start_process();
             break;
         }
 
-        case -1:
+        case ERROR:
         {
             break;
         }
@@ -62,6 +63,10 @@ void daemon_process::start_process()
             {
                 kill(pid, SIGKILL);
                 exit(0);
+            }
+            else
+            {
+                //Обработка неизвестного сигнала
             }
             break;
         }

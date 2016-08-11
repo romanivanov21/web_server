@@ -1,3 +1,9 @@
+/**
+ * Флайл: daemon_process_creator.h
+ *
+ * Описание: создатель демона процесса
+ */
+
 #ifndef _DAEMON_PROCESS_CREATOR_H_
 #define _DAEMON_PROCESS_CREATOR_H_
 
@@ -6,10 +12,21 @@
 class daemon_process_creator : public process_creator
 {
 public:
-    daemon_process_creator();
-    ~daemon_process_creator();
+    daemon_process_creator() = default;
+    ~daemon_process_creator() = default;
 
+    /**
+     * @brief создание нового процесса
+     *
+     * @return pid созданного процесса
+     */
     pid_t create_process() noexcept override;
+
+    /**
+     * @brief получение монитора демона
+     *
+     * @return process * указатель на созданный объект монитора демона
+     */
     process * get_process() noexcept override;
 
 

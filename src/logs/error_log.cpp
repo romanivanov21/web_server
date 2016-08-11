@@ -1,41 +1,22 @@
 #include "error_log.h"
 
-error_log * error_log::log = 0;
+#include <cassert>
+#include <stdexcept>
+#include <fstream>
 
-error_log::error_log()
+error_log& error_log::get_instance() noexcept
 {
+    static error_log err_log;
+    return err_log;
 }
 
-error_log::~error_log()
+const std::string& error_log::create_log_struct( const std::string &msg ) noexcept
 {
-    delete log;
+    return msg;
 }
 
-error_log * error_log::get_instance() noexcept
+void error_log::save_log( const std::string &msg )
 {
-    if (!log)
-        log = new error_log;
-
-    return log;
-}
-
-void error_log::set_log_dir(const std::string & dir)
-{
-    dir_ = dir;
-}
-
-void error_log::create_log_file(void) const
-{
-}
-
-void error_log::open_log_file(void)
-{
-}
-
-void error_log::write_to_log_file(const std::string & msg) const
-{
-}
-
-void error_log::close_log_file(void)
-{
+    assert( !msg.empty() );
+    write_log_file( create_log_struct( msg ) );
 }
