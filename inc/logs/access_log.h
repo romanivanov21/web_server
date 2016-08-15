@@ -1,23 +1,35 @@
 /**
- *  Файл: access_error.h
+ *  Файл: access_log.h
  *
- *  Описание:
+ *  Описание: Реализация логгирования успешно выполненных действий
  */
 
-class access_log
+#include "server_log.h"
+
+class access_log : public server_log
 {
- public:
-    access_log& get_instance( );
+public:
+    ~access_log() = default;
 
-    void set_dir( std::string dir ) noexcept ;
-    std::string get_dir( ) const noexcept;
+    /**
+     * @brief инстансирование единосвенного экземпляра класса singleton
+     *
+     * @return сылка на единственный экземпляр класса access_log
+     */
+    static access_log& get_instance() noexcept;
 
-    void create_log_file( );
-    void write( const std::string &str );
+    void save_log( const std::string& msg ) override;
 
     access_log( const access_log &copy ) = delete;
     access_log& operator=( const access_log &copy ) = delete;
- private:
-    access_log( ) { }
-    ~access_log( ) { }
+
+protected:
+    /**
+     * @brief создания структуры записи( время записи, сообщение и т. д. ) в лог
+     *
+     * @return формированное сообщение
+     */
+    const std::string& create_log_struct( const std::string &msg ) noexcept override;
+private:
+    access_log() = default;
 };
