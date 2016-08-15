@@ -20,7 +20,7 @@ void daemon_process::start_process() noexcept
     sid = setsid();
     if(sid == default_error_code)
     {
-
+        throw std::runtime_error(strerror(errno));
     }
 
     chdir("/");
