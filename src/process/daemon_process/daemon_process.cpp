@@ -10,7 +10,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-void daemon_process::start_process()
+void daemon_process::start_process() noexcept
 {
     pid_t sid = default_error_code;
 
@@ -20,7 +20,7 @@ void daemon_process::start_process()
     sid = setsid();
     if(sid == default_error_code)
     {
-        throw std::runtime_error(strerror(errno));
+
     }
 
     chdir("/");
@@ -38,13 +38,14 @@ void daemon_process::start_process()
 
     switch(pid)
     {
-        case CHILD:
+        case CHILD_PROCESS:
         {
-            process->start_process();
+
+            process->start_process( );
             break;
         }
 
-        case ERROR:
+        case ERROR_PROCESS:
         {
             break;
         }
@@ -73,7 +74,7 @@ void daemon_process::start_process()
     }
 }
 
-void daemon_process::setup_signal(sigset_t & sigset, siginfo_t & siginfo)
+void daemon_process::setup_signal(sigset_t & sigset, siginfo_t & siginfo) noexcept
 {
     // настраиваем сигналы которые будем обрабатывать
     sigemptyset(&sigset);

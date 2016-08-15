@@ -20,24 +20,19 @@ public:
     /**
      * @brief запуск монитора процессов и обработчика сигналов
      */
-    void start_process() override;
+    void start_process() noexcept override;
 
     daemon_process(const daemon_process & copy) = delete;
     daemon_process & operator=(const daemon_process & copy) = delete;
 
 private:
     /**
-     * @brief состояния процесса
-     */
-    enum state_process { CHILD = 0, ERROR = -1 };
-
-    /**
      * @brief регистрация сигналов обработчиком сигналов
      *
      * @param sigset набор сигналов
      * @param siginfo информация о сигналах
      */
-    void setup_signal(sigset_t & sigset, siginfo_t & siginfo);
+    void setup_signal(sigset_t & sigset, siginfo_t & siginfo) noexcept;
 };
 
 #endif //_DAEMON_PROCESS_H_

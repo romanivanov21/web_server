@@ -22,6 +22,8 @@ public:
 
     /**
      * @brief перевод программы в режим демона
+     *
+     * @throw std::runtime_error
      */
     void start_daemon();
 
@@ -30,15 +32,11 @@ public:
 
 private:
     /**
-     * @brief состояния процесса
-     */
-    enum state_process { CHILD = 0, ERROR = -1 };
-    /**
      * @brief запись  номера созданного процесса pid в файл
      *
-     * @param pid номер созданного процесса
+     * @param pid_filename имя файла для записи номера pid
      *
-     * @param pid_filename имя файла для записи pid
+     * @throw std::runtime_error
      */
     void write_pid(const int & pid, const std::string & pid_filename);
 

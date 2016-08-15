@@ -58,21 +58,36 @@ void daemon_tool::start_daemon()
 
     switch (pid)
     {
-        case CHILD:
+        case CHILD_PROCESS:
         {
-            process->start_process();
+            try
+            {
+                process->start_process( );
+            }
+            catch (std::runtime_error & ex)
+            {
+                std::cout << ex.what( ) << std::endl;
+            }
             break;
         }
 
-        case ERROR:
+        case ERROR_PROCESS:
         {
             throw std::runtime_error(strerror(errno));
+            break;
         }
 
         default:
         {
             const std::string pid_filename = "/var/run/echo-server.pid";
-            write_pid(pid, pid_filename);
+            try
+            {
+                write_pid( pid,pid_filename );
+            }
+            catch (std::runtime_error & ex)
+            {
+                std::cout << ex.what( ) << std::endl;
+            }
             break;
         }
     }
@@ -80,15 +95,13 @@ void daemon_tool::start_daemon()
 
 void daemon_tool::write_pid(const int & pid, const std::string & pid_filename)
 {
-    const std::string str_pid = std::to_string(pid);
-
     FILE * stream = fopen(pid_filename.c_str(), "w+");
     if (!stream)
     {
         throw std::runtime_error(strerror(errno));
     }
 
-    if (!fwrite(str_pid.c_str(), str_pid.size(), 1, stream))
+    if (!fwrite((std::to_string(pid)).c_str(), (std::to_string(pid)).size(), 1, stream))
     {
         throw std::runtime_error(strerror(errno));
     }
