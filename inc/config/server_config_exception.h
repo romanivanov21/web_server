@@ -11,10 +11,10 @@
 class server_config_exception : public std::exception
 {
  public:
-    server_config_exception( const std::string& ex );
-    ~server_config_exception( );
+    server_config_exception( const std::string& ex ) noexcept;
+    ~server_config_exception() noexcept;
 
-    const char* what( ) noexcept;
+    const char* what() const noexcept override;
 
  private:
     const std::string& ex_;

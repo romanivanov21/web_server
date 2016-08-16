@@ -1,24 +1,37 @@
 /**
  *  Файл: main.cpp
  *
- *  Описание:
+ *  Описание: реализация функции main - точка входа в приложение
  */
 
-#include "types.h"
-#include "master_loader.h"
-#include "server_loader.h"
-#include "connection_creator.h"
-#include "tcp_connection_creator.h"
+#include "daemon.h"
+
+#include <memory>
+#include <iostream>
 
 int main( int argc, char **argv )
 {
-	int status = default_error_code;
-	int pid = default_error_code;
+    try
+    {
+        daemon_tool::init_config( );
+        daemon_tool::init_access_log( );
+        daemon_tool::init_error_log( );
+    }
+    catch(...)
+    {
 
-	std::shared_ptr<connection_creator> creator( new tcp_connection_creator( ) );
-	std::shared_ptr<connection> connect ( creator->get_connection() );
-	std::shared_ptr<master_loader> loader( new  server_loader( connect.get() ) );
+    }
 
-	return 0;
+    std::shared_ptr<daemon_tool> daemon(new daemon_tool);
+    try
+    {
+        daemon->start_daemon( );
+    }
+    catch (std::runtime_error & ex)
+    {
+        std::cout << ex.what( ) << std::endl;
+    }
+
+    return 0;
 }
 
