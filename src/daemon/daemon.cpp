@@ -19,7 +19,7 @@ void daemon_tool::init_config( )
     }
     catch(...)
     {
-        throw;
+
     }
 }
 
@@ -53,7 +53,7 @@ void daemon_tool::start_daemon()
             }
             catch (std::runtime_error & ex)
             {
-                std::cout << ex.what( ) << std::endl;
+
             }
             break;
         }
@@ -73,7 +73,7 @@ void daemon_tool::start_daemon()
             }
             catch (std::runtime_error & ex)
             {
-                std::cout << ex.what( ) << std::endl;
+
             }
             break;
         }

@@ -44,7 +44,7 @@ void access_log::save_log( const std::string &msg )
     }
     catch(std::runtime_error & ex)
     {
-        throw std::runtime_error(strerror(errno));
+
     }
 
     std::ofstream stream;

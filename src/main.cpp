@@ -28,7 +28,7 @@ int main( int argc, char **argv )
     }
     catch (std::runtime_error & ex)
     {
-        std::cout << ex.what( ) << std::endl;
+
     }
 
     return 0;
