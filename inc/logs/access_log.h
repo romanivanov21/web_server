@@ -4,32 +4,46 @@
  *  Описание: Реализация логгирования успешно выполненных действий
  */
 
+#ifndef _ACCESS_LOG_H_
+#define _ACCESS_LOG_H_
+
 #include "server_log.h"
+
+class access_log;
+
+class destroyer_access_log
+{
+private:
+    access_log * log;
+public:
+    ~destroyer_access_log();
+    void initialize( access_log * p );
+};
 
 class access_log : public server_log
 {
 public:
-    ~access_log() = default;
-
     /**
      * @brief инстансирование единосвенного экземпляра класса singleton
      *
-     * @return сылка на единственный экземпляр класса access_log
+     * @return указатель на единственный экземпляр класса access_log
      */
-    static access_log& get_instance() noexcept;
+    static access_log * get_instance() noexcept;
 
-    void save_log( const std::string& msg ) override;
+    void init_log_file( const std::string & file_name ) override;
+    void save_log( const std::string & msg ) override;
 
-    access_log( const access_log &copy ) = delete;
-    access_log& operator=( const access_log &copy ) = delete;
+    access_log(const access_log & copy) = delete;
+    access_log & operator=(const access_log & copy) = delete;
 
-protected:
-    /**
-     * @brief создания структуры записи( время записи, сообщение и т. д. ) в лог
-     *
-     * @return формированное сообщение
-     */
-    const std::string& create_log_struct( const std::string &msg ) noexcept override;
 private:
     access_log() = default;
+    ~access_log()= default;
+
+    static access_log * log;
+    static destroyer_access_log destroyer;
+
+    friend class destroyer_access_log;
 };
+
+#endif //_ACCESS_LOG_H_

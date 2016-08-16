@@ -9,39 +9,41 @@
 
 #include "server_log.h"
 
+class error_log;
+
+class destroyer_error_log
+{
+private:
+    error_log * log;
+public:
+    ~destroyer_error_log();
+    void initialize( error_log * p );
+};
+
 class error_log : public server_log
 {
 public:
-
-    ~error_log() = default;
-
     /**
      * @brief инстансирование единосвенного экземпляра класса singleton
      *
-     * @return ссылка на единственный экземпляр класса error_log
+     * @return указатель на единственный экземпляр класса error_log
      */
-    static error_log& get_instance() noexcept;
+    static error_log * get_instance() noexcept;
 
-    /**
-     * @brief сохранение записи в лог
-     *
-     * @param msg запись
-     */
-    void save_log( const std::string& msg ) override;
+    void init_log_file( const std::string & file_name ) override;
+    void save_log( const std::string & msg ) override;
 
-    error_log( const error_log& copy ) = delete;
-    error_log& operator=( const error_log& copy ) = delete;
-
-protected:
-    /**
-     * @brief создания структуры записи( время записи, сообщение и т. д. ) в лог
-     *
-     * @return формированное сообщение
-     */
-    const std::string& create_log_struct( const std::string &msg ) noexcept override;
+    error_log(const error_log & copy) = delete;
+    error_log & operator=(const error_log & copy) = delete;
 
 private:
     error_log() = default;
+    ~error_log()= default;
+
+    static error_log * log;
+    static destroyer_error_log destroyer;
+
+    friend class destroyer_error_log;
 };
 
 #endif //_ERROR_LOG_H_

@@ -17,8 +17,7 @@ public:
     ~daemon_tool() = default;
 
     static void init_config();
-    static void init_access_log();
-    static void init_error_log();
+    static void init_log();
 
     /**
      * @brief перевод программы в режим демона

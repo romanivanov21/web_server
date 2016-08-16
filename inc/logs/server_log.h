@@ -22,7 +22,7 @@ public:
      *
      * @throw std::exception
      */
-    virtual void create_log_file( const std::string &file_name );
+    virtual void init_log_file( const std::string & file_name ) = 0;
 
     /**
      * @brief сохранения лог в файл
@@ -32,25 +32,25 @@ public:
     virtual void save_log( const std::string& msg ) = 0;
 
     server_log( const server_log& copy ) = delete;
-    server_log& operator=( const server_log& copy ) = delete;
+    server_log & operator=( const server_log & copy ) = delete;
 
 protected:
     /**
-     * @brief виртуальная функция создания
-     *        структуры записи( время записи, сообщение и т. д. ) в лог
+     * @brief получение даты и времени в необходимом формате типа string
      *
-     * @param msg сообщение в записи
+     * @return string строка со временем и датой
      */
-    virtual const std::string& create_log_struct( const std::string& msg ) noexcept = 0;
-
+    virtual const std::string get_data_time(void) noexcept;
     /**
-     * @brief запись в файл логгирования
+     * @brief создание структуры записи( время записи, сообщение и т. д. ) в лог
      *
-     * @param msg запись
+     * @return формированное сообщение
      */
-    virtual void write_log_file( const std::string& msg) const;
+    virtual const std::string create_log_struct( const std::string& msg ) noexcept;
+
 protected:
-    std::string file_name_;
+    std::string access_log_filename_;
+    std::string error_log_filename_;
 };
 
 #endif //_SERVER_LOG_H_

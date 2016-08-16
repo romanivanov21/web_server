@@ -14,12 +14,11 @@ int main( int argc, char **argv )
     try
     {
         daemon_tool::init_config( );
-        daemon_tool::init_access_log( );
-        daemon_tool::init_error_log( );
+        daemon_tool::init_log( );
     }
-    catch(...)
+    catch(std::runtime_error & ex)
     {
-
+        std::cout << ex.what() << std::endl;
     }
 
     std::shared_ptr<daemon_tool> daemon(new daemon_tool);
