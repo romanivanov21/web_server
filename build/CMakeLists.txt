@@ -18,6 +18,8 @@ SET( CMAKE_DEBUG_POSTFIX "_d" CACHE STRING "postfix applied to debug build of li
 #for release
 #SET( CMAKE_RELEASE_POSTFIX "" CACHE STRING "postfix applied to release build of libraries" )
 
+SET( CMAKE_SHARED_LINKER_FLAGS  "${CMAKE_SHARED_LINKER_FLAGS}" -xlinker )
+
 #путь к исполнеямому файлу
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin )
 
@@ -37,7 +39,7 @@ set( SOURCES ../src/main.cpp
              ../src/daemon/daemon.cpp
              ../src/common/event_dispatcher.cpp
              ../src/logs/server_log.cpp
-             ../src/common/embedding_python_api.cpp
+             ../src/config/embedding_python_api.cpp
     )
 
 include_directories ( ../inc
@@ -59,5 +61,12 @@ source_group ( "Source Files" FILES ${SOURCES} )
 
 add_executable( ${PROJECT} ${HEADRES} ${SOURCES} )
 
-target_link_libraries( ${PROJECT} python2.7 )
+# ( #${PROJECT}
+#        /usr/lib/python2.7/config-x86_64-linux-gnu/libpython2.7.so "-Xlinker"
+#        /usr/lib/x86_64-linux-gnu/libyaml.so
+        #)
+
+target_link_libraries( ${PROJECT} python2.7 "-dynamic -xlinker -export-dynamic" )
+
+#target_link_libraries( ${PROJECT} yaml )
 

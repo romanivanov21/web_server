@@ -5,3 +5,4 @@
 /build/Makefile
 *.swp
 /build/.idea
+*.pyc

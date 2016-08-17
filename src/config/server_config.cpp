@@ -1,7 +1,11 @@
 #include "server_config.h"
+#include "embedding_pyhton_api.h"
 #include "server_config_exception.h"
 
+#include <cstring>
 #include <cassert>
+#include <stdexcept>
+#include <memory>
 
 server_config& server_config::get_instance() noexcept
 {
@@ -9,32 +13,32 @@ server_config& server_config::get_instance() noexcept
     return s_cfg_;
 }
 
-const CONFIG_TYPES* server_config::get_config() const noexcept
+const config_struct& server_config::get_config() const noexcept
 {
-    return &cfg_;
+    static config_struct cfg;
+    std::memset( &cfg, 0x00, sizeof( cfg ) );
+    return cfg;
 }
 
 void server_config::load_config_file( const std::string &file_name )
 {
     assert( !file_name.empty() );
+
+    std::unique_ptr<embedding_python_api> python( new embedding_python_api() );
+    python->py_set_module_path( "/home/roman/work/C++ /web_server/src/config" );
     try
     {
-        cfg_.SERVER_NAME_ = get_server_name( file_name );
-        cfg_.IP_ADDRESS_ = get_ip_address( file_name );
-        cfg_.PORT_ = get_port( file_name );
-        cfg_.DOCUMENT_ROOT_ = get_document_root( file_name );
-        cfg_.ERROR_LOG_ = get_error_log( file_name );
-        cfg_.ACCESS_LOG_ = get_access_log( file_name );
+        python->py_import_module( py_module_name_ );
     }
-    catch( const server_config_exception& ex )
+    catch( std::runtime_error &ex )
     {
-        throw ex;
+        throw server_config_exception("");
     }
+    python->py_function_call( "load_config", "%s", "/home/roman/work/C++ /web_server/src/settings/server_config.yaml" );
 }
 
 const std::string server_config::get_server_name( const std::string &file_name )
 {
-    throw;
     return "";
 }
 
@@ -44,7 +48,7 @@ const std::string server_config::get_ip_address( const std::string &file_name )
     return "";
 }
 
-const unsigned int server_config::get_port( const std::string &file_name )
+const size_t server_config::get_port( const std::string &file_name )
 {
     throw;
     return -1;

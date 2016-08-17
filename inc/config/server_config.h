@@ -9,7 +9,7 @@
 #ifndef _SERVER_CONFIG_H_
 #define _SERVER_CONFIG_H_
 
-#include "types.h"
+#include "config_struct.h"
 
 #include <string>
 
@@ -38,23 +38,23 @@ class server_config
      *
      * @return указатель на CONFIG
      */
-    const CONFIG_TYPES* get_config() const noexcept;
+    const config_struct& get_config() const noexcept;
 
     server_config( const server_config &copy ) = delete;
     server_config& operator=( const server_config &copy ) = delete;
 
- private:
+private:
+    server_config() = default;
+
+private:
     const std::string get_server_name( const std::string &file_name );
     const std::string get_ip_address( const std::string &file_name );
-    const unsigned int get_port( const std::string &file_name );
+    const size_t get_port( const std::string &file_name );
     const std::string get_document_root( const std::string &file_name );
     const std::string get_error_log( const std::string &file_name );
     const std::string get_access_log( const std::string &file_name );
 
- private:
-    server_config() = default;
-
- private:
-    CONFIG_TYPES cfg_;
+private:
+    const std::string py_module_name_ = "config_parser";
 };
 #endif //_SERVER_CONFIG_H_

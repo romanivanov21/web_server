@@ -27,7 +27,7 @@ void daemon::init_config( )
     try
     {
         //!TODO функция не реализована
-        server_config::get_instance( ).load_config_file( "/../" );
+        server_config::get_instance( ).load_config_file( "/home/roman/work/C++ /web_server/settings/server_config.yaml" );
     }
     catch(...)
     {
