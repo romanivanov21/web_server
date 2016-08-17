@@ -8,17 +8,7 @@
 #define _ACCESS_LOG_H_
 
 #include "server_log.h"
-
-class access_log;
-
-class destroyer_access_log
-{
-private:
-    access_log * log;
-public:
-    ~destroyer_access_log();
-    void initialize( access_log * p );
-};
+#include "destroyer_singleton.h"
 
 class access_log : public server_log
 {
@@ -41,9 +31,12 @@ private:
     ~access_log()= default;
 
     static access_log * log;
-    static destroyer_access_log destroyer;
+    static destroyer_singleton<access_log> destroyer;
 
-    friend class destroyer_access_log;
+    friend class destroyer_singleton<access_log>;
+
+private:
+    std::string log_filename_;
 };
 
 #endif //_ACCESS_LOG_H_

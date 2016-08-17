@@ -5,21 +5,12 @@
 #include <string.h>
 
 access_log * access_log::log = nullptr;
-destroyer_access_log access_log::destroyer;
-
-destroyer_access_log::~destroyer_access_log()
-{
-    delete log;
-}
-
-void destroyer_access_log::initialize( access_log * p )
-{
-    log = p;
-}
+destroyer_singleton<access_log> access_log::destroyer;
 
 access_log * access_log::get_instance() noexcept
 {
-    if (!log) {
+    if (!log)
+    {
         log = new access_log;
         destroyer.initialize(log);
     }
@@ -30,10 +21,10 @@ access_log * access_log::get_instance() noexcept
 void access_log::init_log_file( const std::string & file_name )
 {
     assert( !file_name.empty() );
-    access_log_filename_ = file_name;
+    log_filename_ = file_name;
 }
 
-void access_log::save_log( const std::string &msg )
+void access_log::save_log( const std::string & msg )
 {
     assert( !msg.empty() );
 
@@ -48,7 +39,7 @@ void access_log::save_log( const std::string &msg )
     }
 
     std::ofstream stream;
-    stream.open( access_log_filename_, std::ios::out | std::ios::app);
+    stream.open( log_filename_, std::ios::out | std::ios::app);
     if ( !stream )
     {
         throw std::runtime_error(strerror(errno));

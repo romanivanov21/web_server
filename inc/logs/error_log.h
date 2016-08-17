@@ -8,17 +8,7 @@
 #define _ERROR_LOG_H_
 
 #include "server_log.h"
-
-class error_log;
-
-class destroyer_error_log
-{
-private:
-    error_log * log;
-public:
-    ~destroyer_error_log();
-    void initialize( error_log * p );
-};
+#include "destroyer_singleton.h"
 
 class error_log : public server_log
 {
@@ -41,9 +31,12 @@ private:
     ~error_log()= default;
 
     static error_log * log;
-    static destroyer_error_log destroyer;
+    static destroyer_singleton<error_log> destroyer;
 
-    friend class destroyer_error_log;
+    friend class destroyer_singleton<error_log>;
+
+private:
+    std::string log_filename_;
 };
 
 #endif //_ERROR_LOG_H_

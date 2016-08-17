@@ -16,7 +16,7 @@ public:
     virtual ~server_log() = default;
 
     /**
-     * @brief создание лог файла
+     * @brief сохранение идентификатора для доступа к log файлу
      *
      * @param file_name директрия до лог файла
      *
@@ -25,7 +25,7 @@ public:
     virtual void init_log_file( const std::string & file_name ) = 0;
 
     /**
-     * @brief сохранения лог в файл
+     * @brief сохранение лога в файл
      *
      * @param msg сообщение в записи
      */
@@ -47,10 +47,6 @@ protected:
      * @return формированное сообщение
      */
     virtual const std::string create_log_struct( const std::string& msg ) noexcept;
-
-protected:
-    std::string access_log_filename_;
-    std::string error_log_filename_;
 };
 
 #endif //_SERVER_LOG_H_
