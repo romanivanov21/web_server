@@ -19,33 +19,20 @@ void daemon_tool::init_config( )
     }
     catch(...)
     {
-        throw;
+
     }
 }
 
-void daemon_tool::init_access_log( )
+void daemon_tool::init_log( )
 {
     try
     {
-        //!TODO функция не реализована
-        access_log::get_instance( ).create_log_file( "/../" );
+        access_log::get_instance( )->init_log_file( "/var/log/echo-server/access.log" );
+        error_log::get_instance( )->init_log_file( "/var/log/echo-server/error.log" );
     }
-    catch(...)
+    catch(std::runtime_error & ex)
     {
-        throw;
-    }
-}
 
-void daemon_tool::init_error_log( )
-{
-    try
-    {
-        //!TODO функция не реализована
-        error_log::get_instance( ).create_log_file( "/../" );
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -66,7 +53,7 @@ void daemon_tool::start_daemon()
             }
             catch (std::runtime_error & ex)
             {
-                std::cout << ex.what( ) << std::endl;
+
             }
             break;
         }
@@ -86,7 +73,7 @@ void daemon_tool::start_daemon()
             }
             catch (std::runtime_error & ex)
             {
-                std::cout << ex.what( ) << std::endl;
+
             }
             break;
         }

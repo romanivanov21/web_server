@@ -16,41 +16,37 @@ public:
     virtual ~server_log() = default;
 
     /**
-     * @brief создание лог файла
+     * @brief сохранение идентификатора для доступа к log файлу
      *
      * @param file_name директрия до лог файла
      *
      * @throw std::exception
      */
-    virtual void create_log_file( const std::string &file_name );
+    virtual void init_log_file( const std::string & file_name ) = 0;
 
     /**
-     * @brief сохранения лог в файл
+     * @brief сохранение лога в файл
      *
      * @param msg сообщение в записи
      */
     virtual void save_log( const std::string& msg ) = 0;
 
     server_log( const server_log& copy ) = delete;
-    server_log& operator=( const server_log& copy ) = delete;
+    server_log & operator=( const server_log & copy ) = delete;
 
 protected:
     /**
-     * @brief виртуальная функция создания
-     *        структуры записи( время записи, сообщение и т. д. ) в лог
+     * @brief получение даты и времени в необходимом формате типа string
      *
-     * @param msg сообщение в записи
+     * @return string строка со временем и датой
      */
-    virtual const std::string& create_log_struct( const std::string& msg ) noexcept = 0;
-
+    virtual const std::string get_data_time(void) noexcept;
     /**
-     * @brief запись в файл логгирования
+     * @brief создание структуры записи( время записи, сообщение и т. д. ) в лог
      *
-     * @param msg запись
+     * @return формированное сообщение
      */
-    virtual void write_log_file( const std::string& msg) const;
-protected:
-    std::string file_name_;
+    virtual const std::string create_log_struct( const std::string& msg ) noexcept;
 };
 
 #endif //_SERVER_LOG_H_
