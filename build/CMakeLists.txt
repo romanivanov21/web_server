@@ -24,34 +24,37 @@ SET( CMAKE_SHARED_LINKER_FLAGS  "${CMAKE_SHARED_LINKER_FLAGS}" -xlinker )
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin )
 
 set( SOURCES ../src/main.cpp
-             ../src/config/server_config.cpp
-             ../src/logs/error_log.cpp
-             ../src/logs/access_log.cpp
-             ../src/connection/tcp_connection_creator.cpp
-             ../src/connection/tcp_connection.cpp
-             ../src/config/server_config_exception.cpp
-             ../src/process/worker_process/worker_process_creator.cpp
-             ../src/process/worker_process/worker_process.cpp
-             ../src/common/current_system_info.cpp
-             ../src/process/master_process/master_process.cpp
-             ../src/process/master_process/master_process_creator.cpp
-             ../src/process/master_process/master_process_manager.cpp
-             ../src/daemon/daemon.cpp
-             ../src/common/event_dispatcher.cpp
-             ../src/logs/server_log.cpp
-             ../src/config/embedding_python_api.cpp
-    )
+        ../src/config/server_config.cpp
+        ../src/logs/error_log.cpp
+        ../src/logs/access_log.cpp
+        ../src/logs/server_log.cpp
+        ../src/connection/tcp_connection_creator.cpp
+        ../src/connection/tcp_connection.cpp
+        ../src/config/server_config_exception.cpp
+        ../src/process/daemon_process/daemon_process.cpp
+        ../src/process/daemon_process/daemon_process_creator.cpp
+        ../src/process/worker_process/worker_process_creator.cpp
+        ../src/process/worker_process/worker_process.cpp
+        ../src/common/current_system_info.cpp
+        ../src/common/event_dispatcher.cpp
+        ../src/process/master_process/master_process.cpp
+        ../src/process/master_process/master_process_creator.cpp
+        ../src/process/master_process/master_process_manager.cpp
+        ../src/daemon/daemon.cpp
+        ../src/config/embedding_python_api.cpp
+        )
 
 include_directories ( ../inc
-                      ../inc/common
-                      ../inc/config
-                      ../inc/logs
-                      ../inc/connection
-                      ../inc/process/master_process
-                      ../inc/process/worker_process
-                      ../inc/process
-                      ../inc/daemon
-                    )
+        ../inc/common
+        ../inc/config
+        ../inc/logs
+        ../inc/connection
+        ../inc/process/daemon_process
+        ../inc/process/master_process
+        ../inc/process/worker_process
+        ../inc/process
+        ../inc/daemon
+        )
 
 project( ${PROJECT} )
 

@@ -11,6 +11,8 @@
 
 static const int default_error_code = -1;
 
+enum state_process { CHILD_PROCESS = 0, ERROR_PROCESS = -1 };
+
 struct CONFIG_TYPES
 {
     std::string SERVER_NAME_; //доменное имя сервера

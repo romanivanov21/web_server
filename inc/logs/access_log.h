@@ -1,5 +1,5 @@
 /**
- *  Файл: access_error.h
+ *  Файл: access_log.h
  *
  *  Описание: Реализация логгирования успешно выполненных действий
  */
@@ -8,7 +8,7 @@
 
 class access_log : public server_log
 {
- public:
+public:
     ~access_log() = default;
 
     /**

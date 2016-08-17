@@ -1,8 +1,6 @@
 #include "master_process_creator.h"
 #include "master_process.h"
 
-
-#include <sys/types.h>
 #include <unistd.h>
 
 

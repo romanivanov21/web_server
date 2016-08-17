@@ -1,28 +1,16 @@
-#include "daemon.h"
-#include "master_process_creator.h"
-#include "server_config.h"
-#include "access_log.h"
-#include "error_log.h"
 #include "types.h"
+#include "daemon.h"
+#include "error_log.h"
+#include "access_log.h"
+#include "server_config.h"
+#include "master_process_creator.h"
+#include "daemon_process_creator.h"
 
-#include <fcntl.h>
-#include <exception>
-#include <string>
-#include <cstring>
-#include <unistd.h>
-#include <sys/wait.h>
-#include <stdexcept>
 #include <memory>
+#include <iostream>
+#include <cstring>
 
-daemon::daemon( )
-{
-}
-
-daemon::~daemon( )
-{
-}
-
-void daemon::init_config( )
+void daemon_tool::init_config( )
 {
     try
     {
@@ -35,7 +23,7 @@ void daemon::init_config( )
     }
 }
 
-void daemon::init_access_log( )
+void daemon_tool::init_access_log( )
 {
     try
     {
@@ -48,7 +36,7 @@ void daemon::init_access_log( )
     }
 }
 
-void daemon::init_error_log( )
+void daemon_tool::init_error_log( )
 {
     try
     {
@@ -61,65 +49,64 @@ void daemon::init_error_log( )
     }
 }
 
-void daemon::write_pid( int pid ) const
+void daemon_tool::start_daemon()
 {
-    const std::string num_pid = "/var/run/web-server.pid";
-    int fd = open(num_pid.c_str(), O_WRONLY | O_CREAT | O_TRUNC, 0664);
-    if( fd > 0 )
+    std::unique_ptr<process_creator> process_creator(new daemon_process_creator());
+    std::unique_ptr<process> process(process_creator->get_process());
+
+    pid_t pid = process_creator->create_process();
+
+    switch (pid)
     {
-        const std::string str_pid = std::to_string( pid );
-        int res = write( fd, str_pid.c_str( ), str_pid.size() );
-        if( res != str_pid.size() )
+        case CHILD_PROCESS:
         {
-            close( fd );
-            throw std::runtime_error("Can not save pid to file");
-        }
-        close( fd );
-    }
-}
-
-void daemon::sighandler(int signum)
-{
-    waitpid(0, 0, WNOHANG);
-}
-
-void daemon::start_daemon()
-{
-    pid_t pid = default_error_code;
-    pid_t sid = default_error_code;
-
-    struct sigaction sa;
-
-    std::shared_ptr<process_creator> proc_creator( new master_process_creator() );
-    pid = proc_creator->create_process();
-    std::shared_ptr<process> proc (proc_creator->get_process() );
-
-    switch ( pid )
-    {
-        //кооиентарий
-        case 0:
             try
             {
-                proc->start_process( );
+                process->start_process( );
             }
-            catch( std::runtime_error& ex )
+            catch (std::runtime_error & ex)
             {
-                throw ex;
+                std::cout << ex.what( ) << std::endl;
             }
             break;
-
-        case -1:
-            throw std::runtime_error("fork error");
+        }
+        case ERROR_PROCESS:
+        {
+            throw std::runtime_error(strerror(errno));
             break;
+        }
 
         default:
-            write_pid( pid );
-            print_to_console( "[ ok ] PID=" + std::to_string( pid ) );
+        {
+            const std::string pid_filename = "/var/run/echo-server.pid";
+            try
+            {
+                write_pid( pid,pid_filename );
+            }
+            catch (std::runtime_error & ex)
+            {
+                std::cout << ex.what( ) << std::endl;
+            }
             break;
+        }
     }
 }
 
-void daemon::print_to_console( const std::string &msg) const
+void daemon_tool::write_pid(const int & pid, const std::string & pid_filename)
 {
+    FILE * stream = fopen(pid_filename.c_str(), "w+");
+    if (!stream)
+    {
+        throw std::runtime_error(strerror(errno));
+    }
 
+    if (!fwrite((std::to_string(pid)).c_str(), (std::to_string(pid)).size(), 1, stream))
+    {
+        throw std::runtime_error(strerror(errno));
+    }
+
+    if (fclose(stream))
+    {
+        throw std::runtime_error(strerror(errno));
+    }
 }

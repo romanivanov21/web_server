@@ -16,9 +16,10 @@ public:
     /**
      * @brief точка входа в новый процесс
      */
-    virtual void start_process() noexcept = 0;
+    virtual void start_process() = 0;
 
-    process( const process &copy ) = delete;
-    process& operator=( const process &copy ) = delete;
+    process(const process & copy) = delete;
+    process & operator=(const process & copy) = delete;
 };
+
 #endif //_PROCESS_H_

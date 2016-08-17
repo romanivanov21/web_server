@@ -2,7 +2,7 @@
 
 #include <cassert>
 
-access_log& access_log::get_instance( ) noexcept
+access_log & access_log::get_instance( ) noexcept
 {
     static access_log log;
     return log;

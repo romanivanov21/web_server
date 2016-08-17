@@ -19,6 +19,7 @@ public:
 
     /**
      * @brief создатель новго процесса
+     *
      * @retun pid созданного процесса
      */
     virtual pid_t create_process() noexcept = 0;
@@ -27,10 +28,10 @@ public:
      *
      * @return новый экзкмпляр класса process
      */
-    virtual process* get_process() noexcept = 0;
+    virtual process * get_process() noexcept = 0;
 
-    process_creator( const process_creator &copy ) = delete;
-    process_creator& operator=( const process_creator &copy ) = delete;
+    process_creator(const process_creator & copy) = delete;
+    process_creator & operator=(const process_creator & copy) = delete;
 };
 
 #endif //_PROCESS_CREATOR_H_
