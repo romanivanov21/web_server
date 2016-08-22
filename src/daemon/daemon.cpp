@@ -10,12 +10,12 @@
 #include <iostream>
 #include <cstring>
 
-void daemon_tool::init_config( )
+void daemon_tool::init_config()
 {
     try
     {
         //!TODO функция не реализована
-        server_config::get_instance( ).load_config_file( "/../" );
+        server_config::get_instance().load_config_file("/../");
     }
     catch(...)
     {
@@ -23,14 +23,14 @@ void daemon_tool::init_config( )
     }
 }
 
-void daemon_tool::init_log( )
+void daemon_tool::init_log()
 {
     try
     {
-        access_log::get_instance( )->init_log_file( "/var/log/echo-server/access.log" );
-        error_log::get_instance( )->init_log_file( "/var/log/echo-server/error.log" );
+        access_log::get_instance()->init_log_file("/var/log/echo-server/access.log");
+        error_log::get_instance()->init_log_file("/var/log/echo-server/error.log");
     }
-    catch(std::runtime_error & ex)
+    catch(std::runtime_error& ex)
     {
 
     }
@@ -49,9 +49,9 @@ void daemon_tool::start_daemon()
         {
             try
             {
-                process->start_process( );
+                process->start_process();
             }
-            catch (std::runtime_error & ex)
+            catch (std::runtime_error& ex)
             {
 
             }
@@ -69,9 +69,9 @@ void daemon_tool::start_daemon()
             const std::string pid_filename = "/var/run/echo-server.pid";
             try
             {
-                write_pid( pid,pid_filename );
+                write_pid(pid, pid_filename);
             }
-            catch (std::runtime_error & ex)
+            catch (std::runtime_error& ex)
             {
 
             }
@@ -80,7 +80,7 @@ void daemon_tool::start_daemon()
     }
 }
 
-void daemon_tool::write_pid(const int & pid, const std::string & pid_filename)
+void daemon_tool::write_pid(const int& pid, const std::string& pid_filename)
 {
     FILE * stream = fopen(pid_filename.c_str(), "w+");
     if (!stream)

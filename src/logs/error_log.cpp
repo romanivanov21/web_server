@@ -4,10 +4,10 @@
 #include <fstream>
 #include <string.h>
 
-error_log * error_log::log = nullptr;
+error_log* error_log::log = nullptr;
 destroyer_singleton<error_log> error_log::destroyer;
 
-error_log * error_log::get_instance() noexcept
+error_log* error_log::get_instance() noexcept
 {
     if (!log)
     {
@@ -18,29 +18,29 @@ error_log * error_log::get_instance() noexcept
     return log;
 }
 
-void error_log::init_log_file( const std::string & file_name )
+void error_log::init_log_file(const std::string& file_name)
 {
-    assert( !file_name.empty() );
+    assert(!file_name.empty());
     log_filename_ = file_name;
 }
 
-void error_log::save_log( const std::string &msg )
+void error_log::save_log(const std::string& msg)
 {
-    assert( !msg.empty() );
+    assert(!msg.empty());
 
     std::string log_msg;
     try
     {
-        log_msg = create_log_struct( msg );
+        log_msg = create_log_struct(msg);
     }
-    catch(std::runtime_error & ex)
+    catch(std::runtime_error& ex)
     {
 
     }
 
     std::ofstream stream;
-    stream.open( log_filename_, std::ios::out | std::ios::app);
-    if ( !stream )
+    stream.open(log_filename_, std::ios::out | std::ios::app);
+    if (!stream)
     {
         throw std::runtime_error(strerror(errno));
     }
