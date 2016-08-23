@@ -18,19 +18,19 @@ public:
      *
      * @return указатель на единственный экземпляр класса access_log
      */
-    static access_log * get_instance() noexcept;
+    static access_log* get_instance() noexcept;
 
-    void init_log_file( const std::string & file_name ) override;
-    void save_log( const std::string & msg ) override;
+    void init_log_file(const std::string& file_name) override;
+    void save_log(const std::string& msg) override;
 
-    access_log(const access_log & copy) = delete;
-    access_log & operator=(const access_log & copy) = delete;
+    access_log(const access_log& copy) = delete;
+    access_log& operator=(const access_log& copy) = delete;
 
 private:
     access_log() = default;
     ~access_log()= default;
 
-    static access_log * log;
+    static access_log* log;
     static destroyer_singleton<access_log> destroyer;
 
     friend class destroyer_singleton<access_log>;

@@ -27,10 +27,10 @@ void daemon_tool::init_log()
 {
     try
     {
-        access_log::get_instance()->init_log_file("/var/log/echo-server/access.log");
-        error_log::get_instance()->init_log_file("/var/log/echo-server/error.log");
+        access_log::get_instance()->init_log_file("/var/log/web-server/access.log");
+        error_log::get_instance()->init_log_file("/var/log/web-server/error.log");
     }
-    catch(std::runtime_error& ex)
+    catch(...)
     {
 
     }
@@ -51,7 +51,7 @@ void daemon_tool::start_daemon()
             {
                 process->start_process();
             }
-            catch (std::runtime_error& ex)
+            catch (...)
             {
 
             }
@@ -60,18 +60,18 @@ void daemon_tool::start_daemon()
 
         case ERROR_PROCESS:
         {
-            throw std::runtime_error(strerror(errno));
+            throw;
             break;
         }
 
         default:
         {
-            const std::string pid_filename = "/var/run/echo-server.pid";
+            const std::string pid_filename = "/var/run/web-server.pid";
             try
             {
                 write_pid(pid, pid_filename);
             }
-            catch (std::runtime_error& ex)
+            catch (...)
             {
 
             }
@@ -85,16 +85,16 @@ void daemon_tool::write_pid(const int& pid, const std::string& pid_filename)
     FILE * stream = fopen(pid_filename.c_str(), "w+");
     if (!stream)
     {
-        throw std::runtime_error(strerror(errno));
+        throw;
     }
 
     if (!fwrite((std::to_string(pid)).c_str(), (std::to_string(pid)).size(), 1, stream))
     {
-        throw std::runtime_error(strerror(errno));
+        throw;
     }
 
     if (fclose(stream))
     {
-        throw std::runtime_error(strerror(errno));
+        throw;
     }
 }

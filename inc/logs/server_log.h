@@ -22,17 +22,17 @@ public:
      *
      * @throw std::exception
      */
-    virtual void init_log_file( const std::string & file_name ) = 0;
+    virtual void init_log_file(const std::string& file_name) = 0;
 
     /**
      * @brief сохранение лога в файл
      *
      * @param msg сообщение в записи
      */
-    virtual void save_log( const std::string& msg ) = 0;
+    virtual void save_log(const std::string& msg) = 0;
 
-    server_log( const server_log& copy ) = delete;
-    server_log & operator=( const server_log & copy ) = delete;
+    server_log(const server_log& copy) = delete;
+    server_log& operator=(const server_log& copy) = delete;
 
 protected:
     /**
@@ -46,7 +46,7 @@ protected:
      *
      * @return формированное сообщение
      */
-    virtual const std::string create_log_struct( const std::string& msg ) noexcept;
+    virtual const std::string create_log_struct(const std::string& msg) noexcept;
 };
 
 #endif //_SERVER_LOG_H_

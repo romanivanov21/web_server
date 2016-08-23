@@ -6,7 +6,6 @@
 
 #include <memory>
 
-#include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
 
@@ -20,7 +19,7 @@ void daemon_process::start_process() noexcept
     sid = setsid();
     if(sid == default_error_code)
     {
-        throw std::runtime_error(strerror(errno));
+        throw;
     }
 
     chdir("/");

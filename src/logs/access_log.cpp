@@ -2,7 +2,7 @@
 
 #include <cassert>
 #include <fstream>
-#include <string.h>
+#include <iostream>
 
 access_log* access_log::log = nullptr;
 destroyer_singleton<access_log> access_log::destroyer;
@@ -22,6 +22,15 @@ void access_log::init_log_file(const std::string& file_name)
 {
     assert(!file_name.empty());
     log_filename_ = file_name;
+
+    try
+    {
+        save_log("logfile access initialization complete");
+    }
+    catch(...)
+    {
+        throw;
+    }
 }
 
 void access_log::save_log(const std::string& msg)
@@ -33,16 +42,16 @@ void access_log::save_log(const std::string& msg)
     {
         log_msg = create_log_struct(msg);
     }
-    catch(std::runtime_error& ex)
+    catch(...)
     {
 
     }
 
     std::ofstream stream;
-    stream.open( log_filename_, std::ios::out | std::ios::app);
+    stream.open(log_filename_, std::ios::out | std::ios::app);
     if (!stream)
     {
-        throw std::runtime_error(strerror(errno));
+        throw;
     }
 
     stream.write(log_msg.c_str(), log_msg.size());

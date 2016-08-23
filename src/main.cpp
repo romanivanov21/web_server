@@ -16,9 +16,9 @@ int main(int argc, char* argv[])
         daemon_tool::init_config();
         daemon_tool::init_log();
     }
-    catch(std::runtime_error& ex)
+    catch(...)
     {
-        std::cout << ex.what() << std::endl;
+
     }
 
     std::shared_ptr<daemon_tool> daemon(new daemon_tool);
@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
     {
         daemon->start_daemon();
     }
-    catch (std::runtime_error& ex)
+    catch (...)
     {
 
     }
