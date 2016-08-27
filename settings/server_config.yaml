@@ -4,26 +4,24 @@
 
 #--- Основыне настройки сервера ---
 Server:
- #--- Настройка виртуального хоста ---
- VirtualHost1:
-  Name: 'web_server.ru'                                 #доменное имя виртуального хоста
+ Name: 'web_server.ru'                                 #доменное имя виртуального хоста
 
-  #--- Настройка сетевого соединения ---
-  Connection:
-   ip_version: 4                                        #версия ip аддреса ( ip_v4 или ip_v6 )
-   ip_address: '127.0.0.1'                              #ip адресс
-   listen: 8888                                         #порт
+ #--- Настройка сетевого соединения ---
+ Connection:
+  ip_version: '4'                                      #версия ip аддреса ( ip_v4 или ip_v6 )
+  ip_address: '127.0.0.1'                              #ip адресс
+  listen: '8888'                                       #порт
 
-  #--- Основные директрии сервера ---
-  Directories:
-   document_root: '/www/data/web_server'                #корневая директория
+ #--- Основные директрии сервера ---
+ Directories:
+  document_root: '/var/www/web_server'                #корневая директория
 
-  #--- Настрйоки лог файлов ---
-  Logs:
-   error_log: '/www/data/web_server/error_log'          #директрия до файла ошибок
-   access_log: '/www/data/web_server/access_log'        #директрия для файла выолненных действий
+ #--- Настрйоки лог файлов ---
+ Logs:
+  error_log: '/var/log/web_server/error_log'          #директрия до файла ошибок
+  access_log: '/var/log/web_server/access_log'        #директрия для файла выолненных действий
 
 #--- Настройки дополнительных модулей сервера
 Modules:
  #--- Модуль CGI
- Mod_CGI: '/www/data/web_server/config/mods-avaible'    #конфиг модуля CGI
+ mod_CGI: 'var/www/web_server/config/mods-avaible'    #конфиг модуля CGI

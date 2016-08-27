@@ -18,7 +18,11 @@ SET( CMAKE_DEBUG_POSTFIX "_d" CACHE STRING "postfix applied to debug build of li
 #for release
 #SET( CMAKE_RELEASE_POSTFIX "" CACHE STRING "postfix applied to release build of libraries" )
 
-SET( CMAKE_SHARED_LINKER_FLAGS  "${CMAKE_SHARED_LINKER_FLAGS}" -xlinker )
+
+SET( FLAG_DEBUG "Debug" )
+if( "${CMAKE_BUILD_TYPE}" STREQUAL "${FLAG_DEBUG}" )
+    add_definitions( -D_DEBUG )
+endif()
 
 #путь к исполнеямому файлу
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin )
@@ -42,10 +46,14 @@ set( SOURCES ../src/main.cpp
         ../src/process/master_process/master_process_manager.cpp
         ../src/daemon/daemon.cpp
         ../src/config/embedding_python_api.cpp
+        ../src/common/user_msg/user_msg_parser.cpp
+        ../src/common/user_msg/en/en_user_msg_parser.cpp
         )
 
 include_directories ( ../inc
         ../inc/common
+        ../inc/common/user_msg/en
+        ../inc/common/user_msg
         ../inc/config
         ../inc/logs
         ../inc/connection
@@ -64,12 +72,6 @@ source_group ( "Source Files" FILES ${SOURCES} )
 
 add_executable( ${PROJECT} ${HEADRES} ${SOURCES} )
 
-# ( #${PROJECT}
-#        /usr/lib/python2.7/config-x86_64-linux-gnu/libpython2.7.so "-Xlinker"
-#        /usr/lib/x86_64-linux-gnu/libyaml.so
-        #)
+#target_link_libraries( ${PROJECT} python2.7 "-dynamic -xlinker -export-dynamic" )
 
-target_link_libraries( ${PROJECT} python2.7 "-dynamic -xlinker -export-dynamic" )
-
-#target_link_libraries( ${PROJECT} yaml )
-
+target_link_libraries( ${PROJECT} python2.7 )

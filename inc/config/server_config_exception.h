@@ -5,6 +5,8 @@
  *           которые могут возниктуть при разборе конфигурационного файла
  */
 
+#include "msg_type.h"
+
 #include <string>
 #include <exception>
 
@@ -12,7 +14,10 @@ class server_config_exception : public std::exception
 {
  public:
     server_config_exception( const std::string& ex ) noexcept;
+    server_config_exception( msg_type type ) noexcept;
     ~server_config_exception() = default;
+
+
 
     /**
      * @brief получение информации об исключении

@@ -1,9 +1,9 @@
 #include "embedding_pyhton_api.h"
+#include "server_config_exception.h"
 
 #include <cassert>
-#include <stdexcept>
 
-embedding_python_api::embedding_python_api() : pName( nullptr ), pModule( nullptr ), pFunc( nullptr )
+embedding_python_api::embedding_python_api() : pName( nullptr ), pModule( nullptr ), pInstance( nullptr )
 {
     Py_Initialize();
 
@@ -20,6 +20,8 @@ embedding_python_api::~embedding_python_api() noexcept
         Py_DECREF( pModule );
     if( pName )
         Py_DECREF( pName );
+    if( pInstance )
+        Py_DECREF( pInstance );
 
     Py_Finalize();
 }
@@ -30,11 +32,9 @@ void embedding_python_api::py_import_module( const std::string &module_name )
 
     pName = PyString_FromString( module_name.c_str() );
     pModule = PyImport_Import( pName );
-    if( pModule == nullptr )
+    if( !pModule )
     {
-#ifdef _DEBUG
         PyErr_Print();
-#endif //_DEBUG
         throw std::runtime_error( "Can not import module" );
     }
 }
@@ -52,12 +52,12 @@ void embedding_python_api::py_set_module_path( const std::string& module_patch )
 void embedding_python_api::py_function_call( const std::string &function_name, char *format, ... )
 {
     assert( !function_name.empty() );
-    assert( pModule != nullptr );
+    assert( pModule );
 
-    if( pModule != nullptr )
+    if( pModule )
     {
-        pFunc = PyObject_GetAttrString( pModule, function_name.c_str() );
-        if( ( pFunc != nullptr ) && ( PyCallable_Check( pFunc ) ) )
+        PyObject* pFunc = PyObject_GetAttrString( pModule, function_name.c_str() );
+        if( ( pFunc ) && ( PyCallable_Check( pFunc ) ) )
         {
             PyObject_CallFunction( pFunc, format );
         }
@@ -66,6 +66,7 @@ void embedding_python_api::py_function_call( const std::string &function_name, c
 #ifdef _DEBUG
             PyErr_Print();
 #endif //_DEBUG
+            throw std::runtime_error("");
         }
     }
     else
@@ -73,5 +74,42 @@ void embedding_python_api::py_function_call( const std::string &function_name, c
 #ifdef _DEBUG
         PyErr_Print();
 #endif //_DEBUG
+        throw server_config_exception("");
+    }
+}
+
+void embedding_python_api::py_class_instance( const std::string &class_name )
+{
+    assert( pModule );
+    if( pModule )
+    {
+        PyObject *pDict = PyModule_GetDict( pModule );
+        if( pDict )
+        {
+            assert( !class_name.empty( ));
+            //Получение по имени узказатель на класс из модуля python
+            PyObject *pClass = PyDict_GetItemString( pDict,class_name.c_str( ));
+            if( pClass )
+            {
+                if( PyCallable_Check( pClass ))
+                {
+                    pInstance = PyObject_CallObject( pClass, nullptr );
+                }
+                else
+                {
+#ifdef _DEBUG
+                    PyErr_Print();
+#endif //_DUBUG
+                    throw std::logic_error( "Can not instance class:" + class_name );
+                }
+            }
+            else
+            {
+#ifndef _DUBUG
+                PyErr_Print();
+#endif //_DEBUG
+                throw std::logic_error( "Can not find class from python module: " + class_name );
+            }
+        }
     }
 }

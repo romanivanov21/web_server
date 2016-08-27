@@ -8,16 +8,16 @@
 
 void server_log::create_log_file( const std::string &file_name )
 {
-    assert( file_name.empty() );
+    assert( !file_name.empty() );
 
     std::ofstream stream;
     stream.open( file_name, std::ios::out );
     if( !stream )
-        throw std::runtime_error("Can not create log file");
+        throw std::runtime_error( strerror(errno) );
     file_name_ = file_name;
 }
 
-void server_log::write_log_file( const std::string &msg ) const
+void server_log::write_log_file( const std::string &msg )
 {
     assert( !msg.empty() );
 

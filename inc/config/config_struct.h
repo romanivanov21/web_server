@@ -8,7 +8,12 @@
 #ifndef _CONFIG_STRUCT_H_
 #define _CONFIG_STRUCT_H_
 
+#ifdef _DEBUG
+#include <iostream>
+#endif //_DEBUG
+
 #include <string>
+#include <vector>
 
 /* Структра для харнения основную конфигурацию сервера */
 struct config_server
@@ -34,6 +39,19 @@ struct config_server
         std::string access_log_;        // директория до файла логирования выполненных действий
     };
 
+#ifdef _DEBUG
+    void print_to_console() const noexcept
+    {
+        std::cout<<"Name: " + name_<<std::endl;
+        std::cout<<"ip_version: " + std::to_string( connection_.ip_version_ )<<std::endl;
+        std::cout<<"ip_address: " + connection_.ip_address_<<std::endl;
+        std::cout<<"listen: " + std::to_string( connection_.listen_ )<<std::endl;
+        std::cout<<"document_root: " + directories_.document_root_<<std::endl;
+        std::cout<<"access_log: " + logs_.access_log_<<std::endl;
+        std::cout<<"error_log: " + logs_.error_log_<<std::endl;
+    }
+#endif //_DEBUG
+
     std::string name_;                  // доменное имя сервера
     server_connection connection_;
     server_directories directories_;
@@ -43,7 +61,7 @@ struct config_server
 /* Структра для хранения конфигураций дополнительных модулей сервера */
 struct config_modules
 {
-    std::string mod_CGI_;
+    std::vector<std::string> mods_;
 };
 
 /* Основная структрадля хранения информации из конфигурационного файла сервера */
@@ -52,5 +70,8 @@ struct config_struct
     config_server server_;              // конфигурация сервера
     config_modules modules_;            // конфигурация дополниельных модулей
 };
+
+/* Перечисление для опеределения валидности конфигурации ip_version */
+enum ip_version_type { CONFIG_IPv4 = 4, CONFIG_IPv6 = 6 };
 
 #endif //_CONFIG_STRUCT_H_

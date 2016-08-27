@@ -29,7 +29,7 @@ public:
      *
      * @param msg сообщение в записи
      */
-    virtual void save_log( const std::string& msg ) = 0;
+    virtual void save_log( const std::string& msg ) { };
 
     server_log( const server_log& copy ) = delete;
     server_log& operator=( const server_log& copy ) = delete;
@@ -48,7 +48,8 @@ protected:
      *
      * @param msg запись
      */
-    virtual void write_log_file( const std::string& msg) const;
+    void write_log_file( const std::string& msg );
+
 protected:
     std::string file_name_;
 };
