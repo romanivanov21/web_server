@@ -112,7 +112,7 @@ void server_config::load_config_file( const std::string& file_name )
     assert( !file_name.empty() );
 
     //создание объекта для встраивании модуля python
-    std::unique_ptr<embedding_python_api> python( new embedding_python_api() );
+    std::unique_ptr<embedding_python_api> python = std::make_unique<embedding_python_api>();
     python->py_set_module_path( py_module_path_ );
     python->py_import_module( py_module_name_ );
     //создание новго объекта класса из модуля python
@@ -147,11 +147,12 @@ void server_config::load_config_file( const std::string& file_name )
 void server_config::get_server_name( const std::unique_ptr<embedding_python_api>& python )
 {
     assert( python.get() );
-    const char *buffer = nullptr;
-    python->py_class_method_call( "get_server_name", &buffer, nullptr, nullptr );
-    if( ( buffer ) && ( std::string(buffer) != "" ) )
+
+    std::string server_name = "";
+    python->py_class_method_call( "get_server_name", server_name, nullptr, nullptr );
+    if( server_name != "" )
     {
-        cfg_->server_.name_ = buffer;
+        cfg_->server_.name_ = server_name;
     }
     else
     {
@@ -162,16 +163,20 @@ void server_config::get_server_name( const std::unique_ptr<embedding_python_api>
 void server_config::get_ip_version( const std::unique_ptr<embedding_python_api>& python )
 {
     assert( python.get() );
-    const char *buffer = nullptr;
-    python->py_class_method_call( "get_ip_version", &buffer, nullptr, nullptr );
 
-    if( ( buffer ) && ( std::string( buffer ) != "" ) )
+    std::string ip_version = "";
+    python->py_class_method_call( "get_ip_version", ip_version, nullptr, nullptr );
+
+    if( ip_version != "" )
     {
-        size_t ip_version_temp = static_cast<size_t >( atoi( buffer ) );
-        if( ( ip_version_temp == ip_version_type::CONFIG_IPv4 )
-           || ( ip_version_temp == ip_version_type::CONFIG_IPv6 ) )
+        size_t ip_version_temp = static_cast<size_t >( atoi( ip_version.c_str() ) );
+        if( ip_version_temp == config_server::server_connection::CONFIG_IPv4 )
         {
-            cfg_->server_.connection_.ip_version_ = ip_version_temp;
+            cfg_->server_.connection_.ip_version_ = config_server::server_connection::CONFIG_IPv4;
+        }
+        else if( ip_version_temp == config_server::server_connection::CONFIG_IPv6 )
+        {
+            cfg_->server_.connection_.ip_version_ = config_server::server_connection::CONFIG_IPv6;
         }
         else
         {
@@ -187,12 +192,14 @@ void server_config::get_ip_version( const std::unique_ptr<embedding_python_api>&
 void server_config::get_ip_address( const std::unique_ptr<embedding_python_api> &python )
 {
     assert( python.get() );
-    const char *buffer = nullptr;
-    python->py_class_method_call( "get_ip_address", &buffer, nullptr, nullptr );
-    if( ( buffer ) && ( std::string( buffer ) != "" ) )
+
+    std::string ip_address = "";
+    python->py_class_method_call( "get_ip_address", ip_address, nullptr, nullptr );
+    if( ( ip_address != "")
+        && ( config_server::server_connection::is_valid_ip_address( ip_address, cfg_->server_.connection_.ip_version_ ) )
+      )
     {
-        //TODO: Здесь должно быть проверка валидности ip адресса из конфигурационного файла
-        cfg_->server_.connection_.ip_address_ = buffer;
+        cfg_->server_.connection_.ip_address_ = ip_address;
     }
     else
     {
@@ -203,14 +210,15 @@ void server_config::get_ip_address( const std::unique_ptr<embedding_python_api> 
 void server_config::get_listen( const std::unique_ptr<embedding_python_api> &python )
 {
     assert( python.get() );
-    const char *buffer = nullptr;
-    python->py_class_method_call( "get_listen", &buffer, nullptr, nullptr );
-    if( ( buffer ) && ( std::string( buffer ) != "" ) )
+
+    std::string listen = "";
+    python->py_class_method_call( "get_listen", listen, nullptr, nullptr );
+    if( listen != "" )
     {
-        std::uint32_t listen_temp = static_cast<std::uint32_t >( atoi( buffer ) );
+        std::uint32_t listen_temp = static_cast<std::uint32_t >( atoi( listen.c_str() ) );
         if( ( listen_temp > 0 ) && ( listen_temp < tcp_port_max ) )
         {
-            cfg_->server_.connection_.listen_ = static_cast<size_t >( atoi( buffer ) );
+            cfg_->server_.connection_.listen_ = listen_temp;
         }
         else
         {
@@ -226,11 +234,12 @@ void server_config::get_listen( const std::unique_ptr<embedding_python_api> &pyt
 void server_config::get_document_root( const std::unique_ptr<embedding_python_api>& python )
 {
     assert( python );
-    const char *buffer = nullptr;
-    python->py_class_method_call( "get_document_root", &buffer, nullptr, nullptr );
-    if( ( buffer ) && ( std::string( buffer ) != "" ) )
+
+    std::string document_root = "";
+    python->py_class_method_call( "get_document_root", document_root, nullptr, nullptr );
+    if( document_root != "" )
     {
-        cfg_->server_.directories_.document_root_ = buffer;
+        cfg_->server_.directories_.document_root_ = document_root;
     }
     else
     {
@@ -241,11 +250,12 @@ void server_config::get_document_root( const std::unique_ptr<embedding_python_ap
 void server_config::get_access_log( const std::unique_ptr<embedding_python_api>& python )
 {
     assert( python );
-    const char *buffer = nullptr;
-    python->py_class_method_call( "get_access_log", &buffer, nullptr, nullptr );
-    if( ( buffer ) && ( std::string( buffer ) != "" ) )
+
+    std::string access_log = "";
+    python->py_class_method_call( "get_access_log", access_log, nullptr, nullptr );
+    if( access_log != "" )
     {
-        cfg_->server_.logs_.access_log_ = buffer;
+        cfg_->server_.logs_.access_log_ = access_log;
     }
     else
     {
@@ -256,11 +266,12 @@ void server_config::get_access_log( const std::unique_ptr<embedding_python_api>&
 void server_config::get_error_log( const std::unique_ptr<embedding_python_api>& python )
 {
     assert( python );
-    const char* buffer = nullptr;
-    python->py_class_method_call( "get_error_log", &buffer,nullptr,nullptr );
-    if( ( buffer ) && ( std::string( buffer ) != "" ) )
+
+    std::string error_log = "";
+    python->py_class_method_call( "get_error_log", error_log, nullptr, nullptr );
+    if( error_log != "" )
     {
-        cfg_->server_.logs_.error_log_ = buffer;
+        cfg_->server_.logs_.error_log_ = error_log;
     }
     else
     {
@@ -271,8 +282,8 @@ void server_config::get_error_log( const std::unique_ptr<embedding_python_api>& 
 void server_config::get_mod_CGI( const std::unique_ptr<embedding_python_api>& python )
 {
     assert( python );
-    const char* buffer = nullptr;
-    python->py_class_method_call( "get_modules", &buffer, nullptr, nullptr );
+    std::string buffer = "";
+    //python->py_class_method_call( "get_modules", buffer, nullptr, nullptr );
 }
 
 const std::string server_config::get_py_module_path() noexcept

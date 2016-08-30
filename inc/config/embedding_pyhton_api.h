@@ -52,59 +52,32 @@ public:
      */
     void py_class_instance( const std::string& class_name );
 
-    template <class... Args>
-    void py_class_method_call( const std::string& method_name, bool& ret_value, char* format, Args... args )
-    {
-        assert( !method_name.empty() );
-
-        PyObject* pValue = nullptr;
-        PyObject* pMethod = PyObject_GetAttrString( pInstance, method_name.c_str() );
-        if( ( pInstance ) && ( PyCallable_Check( pMethod ) ) )
-        {
-            pValue = PyObject_CallMethod( pInstance, const_cast<char *>(method_name.c_str()), format, args... );
-            if( pValue )
-            {
-                ret_value = static_cast<bool >( pValue );
-                Py_DECREF( pValue );
-            }
-        }
-        else
-        {
-#ifdef _DEBUG
-            PyErr_Print();
-#endif // _DEBUG
-            throw std::logic_error("Class didn't instanced");
-        }
-    }
-
     /**
-     *  @brief вызов метода из модуля python
+     *  @brief вызов метода из модуля python, возвращаемое значение PyBoolean
+     *
+     *  @param method_name имя вызывемого метода
+     *  @param ret_value возращаемое значение метода
+     *  @param format формат передавамых значений в качестве парамеров в метод
+     *  @param args парамтры для передачи при вызове в метод
+     *
+     *  @throw std::logic_error
      */
     template <class... Args>
-    void py_class_method_call( const std::string& method_name, const char **ret_buffer, char *format, Args... args )
-    {
-        assert( !method_name.empty() );
+    void py_class_method_call( const std::string& method_name, bool& ret_value, char* format, Args... args );
 
-        PyObject* pValue = nullptr;
-        PyObject* pMethod = PyObject_GetAttrString( pInstance, method_name.c_str() );
-        if( ( pInstance ) && ( PyCallable_Check( pMethod ) ) )
-        {
-            pValue = PyObject_CallMethod( pInstance, const_cast<char *>(method_name.c_str()), format, args... );
-            if( ( pValue ) && ( ret_buffer ) )
-            {
-                PyObject_AsCharBuffer( pValue, ret_buffer, &pValue->ob_refcnt );
-                PyErr_Print();
-                Py_DECREF( pValue );
-            }
-        }
-        else
-        {
-#ifdef _DEBUG
-            PyErr_Print();
-#endif //_DEBUG
-            throw std::logic_error("Class didn't instanced");
-        }
-    }
+    /**
+     *  @brief вызов метода из модуля python, возвращаемое значение PyString
+     *
+     *  @param method_name имя вызывемого метода
+     *  @param ret_value возращаемое значение метода
+     *  @param format формат передавамых значений в качестве парамеров в метод
+     *  @param args парамтры для передачи при вызове в метод
+     *
+     *  @throw std::logic_error
+     */
+    template <class... Args>
+    void py_class_method_call( const std::string& method_name, std::string& ret_value, char *format, Args... args );
+
 
     embedding_python_api( const embedding_python_api& copy ) = delete;
     embedding_python_api& operator=( const embedding_python_api& copy ) = delete;
@@ -114,5 +87,5 @@ private:
     PyObject *pName;
     PyObject *pModule;
 };
-
+#include "embedding_python_api_impl.h"
 #endif //_EMBEDDING_PYTHON_API_H_

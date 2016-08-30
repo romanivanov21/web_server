@@ -12,6 +12,11 @@
 #include <iostream>
 #endif //_DEBUG
 
+#ifdef __linux__
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#endif //__linux__
+
 #include <string>
 #include <vector>
 
@@ -21,7 +26,25 @@ struct config_server
     /* Структра для хранения инцормации о сетевом соединении */
     struct server_connection
     {
-        size_t ip_version_;             // версия ip адреса
+        /* Перечисление для опеределения валидности конфигурации ip_version */
+        enum ip_version_type { CONFIG_IPv4 = 4, CONFIG_IPv6 = 6 };
+
+        static bool is_valid_ip_address( const std::string& ip_address, ip_version_type version_type )
+        {
+            bool res = false;
+            struct sockaddr_in sa;
+            if( version_type == ip_version_type::CONFIG_IPv4 )
+            {
+                res = ( ( inet_pton(AF_INET, ip_address.c_str(), &(sa.sin_addr) ) ) != 0 );
+            }
+            else if( version_type == ip_version_type::CONFIG_IPv6 )
+            {
+                res = ( ( inet_pton(AF_INET6, ip_address.c_str(), &(sa.sin_addr) ) ) != 0 );
+            }
+            return res;
+        }
+
+        ip_version_type ip_version_;    // версия ip адреса
         std::string ip_address_;        // ip адрес
         size_t listen_;                 // порт, на котором принимаются входящие соединение
     };
@@ -70,8 +93,5 @@ struct config_struct
     config_server server_;              // конфигурация сервера
     config_modules modules_;            // конфигурация дополниельных модулей
 };
-
-/* Перечисление для опеределения валидности конфигурации ip_version */
-enum ip_version_type { CONFIG_IPv4 = 4, CONFIG_IPv6 = 6 };
 
 #endif //_CONFIG_STRUCT_H_

@@ -14,7 +14,7 @@
 static const int default_error_code = -1;
 
 /* Максимальное число tcp портов */
-static const std::uint32_t tcp_port_max = 650000;
+static const std::uint32_t tcp_port_max = 65535;
 
 enum state_process { CHILD_PROCESS = 0, ERROR_PROCESS = -1 };
 

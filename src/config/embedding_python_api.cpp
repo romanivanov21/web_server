@@ -7,11 +7,13 @@ embedding_python_api::embedding_python_api() : pName( nullptr ), pModule( nullpt
 {
     Py_Initialize();
 
+#ifdef __linux__
     //установка и нстройка путей до python модулей по умолчаиню
     PyRun_SimpleString( "import sys" );
     PyRun_SimpleString( "sys.path.append('/usr/lib/python2.7/') ");
     PyRun_SimpleString( "sys.path.append('/usr/lib/python2.7/dist-packages')" );
     PyRun_SimpleString( "sys.path.append('/usr/lib/python2.7/lib-dynload') " );
+#endif //__linux__
 }
 
 embedding_python_api::~embedding_python_api() noexcept

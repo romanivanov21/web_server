@@ -6,6 +6,7 @@
 
 #include "daemon.h"
 #include "server_config_exception.h"
+#include "user_msg_parser.h"
 
 #include <memory>
 #include <iostream>
@@ -16,28 +17,26 @@ int main( int argc, char **argv )
     {
         daemon_tool::init_config();
     }
-    //Перехват исключений при чтении и разбора конфигурационного файла сервера
-    catch( server_config_exception& ex )
+    catch( server_config_exception& ex ) //Перехват исключений при чтении и разбора конфигурационного файла сервера
     {
         std::cout<<ex.what()<<std::endl;
     }
-    //Перехват всех типовх исключений
-    catch( ... )
+    catch( ... ) //Перехват всех типовх исключений
     {
-        std::cout<<"system error"<<std::endl;
+        std::cout<<user_msg_parser::get_instance()->find_user_msg( msg_type::msg_system_error )<<std::endl;
     }
 
     try
     {
-        //daemon_tool::init_access_log( );
-        //daemon_tool::init_error_log( );
+        daemon_tool::init_access_log( );
+        daemon_tool::init_error_log( );
     }
     catch(...)
     {
 
     }
 
-    /*std::shared_ptr<daemon_tool> daemon(new daemon_tool);
+    std::shared_ptr<daemon_tool> daemon(new daemon_tool);
     try
     {
         daemon->start_daemon( );
@@ -45,7 +44,7 @@ int main( int argc, char **argv )
     catch (std::runtime_error & ex)
     {
         std::cout << ex.what( ) << std::endl;
-    }*/
+    }
 
     return 0;
 }
