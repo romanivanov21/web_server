@@ -14,10 +14,6 @@ master_process::master_process()
     manager_ = new master_process_manager();
 }
 
-master_process::~master_process()
-{
-}
-
 void master_process::start_process() noexcept
 {
 

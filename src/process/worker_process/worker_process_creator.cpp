@@ -4,14 +4,6 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-worker_process_creator::worker_process_creator()
-{
-}
-
-worker_process_creator::~worker_process_creator()
-{
-}
-
 pid_t worker_process_creator::create_process() noexcept
 {
     return fork();

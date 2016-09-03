@@ -5,21 +5,36 @@
 #include "server_config.h"
 #include "master_process_creator.h"
 #include "daemon_process_creator.h"
+#include "current_system_info.h"
+#include "server_config_exception.h"
 
-#include <memory>
-#include <iostream>
 #include <cstring>
 
-void daemon_tool::init_config( )
+void daemon_tool::init_config()
 {
     try
     {
-        //!TODO функция не реализована
-        server_config::get_instance( ).load_config_file( "/../" );
+        /* В настоящей реализации, файл конфигурации сервера
+           находиться в папке ../web_server/settings/server_config.yaml
+           директория вычисляется относительно испольняемного файла из папки web_server/build/bin
+        */
+        std::string path = current_system_info::get_current_path();
+        dell_last_dir( path );
+        dell_last_dir( path );
+        dell_last_dir( path );
+        add_dir( path, "settings" );
+        add_dir( path, "server_config.yaml" );
+        server_config::get_instance()->load_config_file( path );
+
+#ifdef _DEBUG
+        const config_struct* cfg = server_config::get_instance()->get_config();
+        if( cfg )
+            cfg->print_to_console();
+#endif //_DEBUG
     }
-    catch(...)
+    catch( const server_config_exception& ex )
     {
-        throw;
+        throw ex;
     }
 }
 
@@ -28,11 +43,11 @@ void daemon_tool::init_access_log( )
     try
     {
         //!TODO функция не реализована
-        access_log::get_instance( ).create_log_file( "/../" );
+        access_log::get_instance( ).create_log_file( server_config::get_config()->server_.logs_.access_log_ );
     }
-    catch(...)
+    catch( std::runtime_error& ex )
     {
-        throw;
+        std::cout<<ex.what()<<std::endl;
     }
 }
 
@@ -41,7 +56,7 @@ void daemon_tool::init_error_log( )
     try
     {
         //!TODO функция не реализована
-        error_log::get_instance( ).create_log_file( "/../" );
+        error_log::get_instance( ).create_log_file( server_config::get_config()->server_.logs_.error_log_ );
     }
     catch(...)
     {
@@ -51,7 +66,7 @@ void daemon_tool::init_error_log( )
 
 void daemon_tool::start_daemon()
 {
-    std::unique_ptr<process_creator> process_creator(new daemon_process_creator());
+    std::unique_ptr<process_creator> process_creator( std::make_unique<daemon_process_creator>() );
     std::unique_ptr<process> process(process_creator->get_process());
 
     pid_t pid = process_creator->create_process();
@@ -62,6 +77,7 @@ void daemon_tool::start_daemon()
         {
             try
             {
+                access_log::get_instance().save_log( "Создан процесс для управления демоном" );
                 process->start_process( );
             }
             catch (std::runtime_error & ex)
@@ -70,7 +86,6 @@ void daemon_tool::start_daemon()
             }
             break;
         }
-
         case ERROR_PROCESS:
         {
             throw std::runtime_error(strerror(errno));
@@ -79,7 +94,7 @@ void daemon_tool::start_daemon()
 
         default:
         {
-            const std::string pid_filename = "/var/run/echo-server.pid";
+            const std::string pid_filename = "/var/run/web-server.pid";
             try
             {
                 write_pid( pid,pid_filename );
