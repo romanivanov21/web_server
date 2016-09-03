@@ -1,3 +1,10 @@
+/**
+ *   Файл: user_msg_parser.h
+ *
+ *   Описание: базовый класс для обработки пользовательских сообщений
+ *
+ */
+
 #ifndef _USER_MSG_PARSER_H_
 #define _USER_MSG_PARSER_H_
 
@@ -12,8 +19,18 @@ public:
     user_msg_parser() = default;
     virtual ~user_msg_parser() = default;
 
+    /**
+     *   @brief инстансирование синглетон класса
+     *
+     *   @return указатель на класс
+     */
     static user_msg_parser* get_instance() noexcept;
 
+    /**
+     *   @brief абстрактный метод поиска пользовательского сообщения по интетификатору
+     *
+     *   @return пользовательское сообщение
+     */
     virtual const std::string& find_user_msg( msg_type msg ) const noexcept = 0;
 
     user_msg_parser( const user_msg_parser& copy ) = delete;

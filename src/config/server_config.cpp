@@ -282,8 +282,8 @@ void server_config::get_error_log( const std::unique_ptr<embedding_python_api>& 
 void server_config::get_mod_CGI( const std::unique_ptr<embedding_python_api>& python )
 {
     assert( python );
-    std::string buffer = "";
-    //python->py_class_method_call( "get_modules", buffer, nullptr, nullptr );
+
+    python->py_class_method_call( "get_modules", cfg_->modules_.mod_, nullptr, nullptr );
 }
 
 const std::string server_config::get_py_module_path() noexcept

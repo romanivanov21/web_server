@@ -242,14 +242,18 @@ class ConfigParser(object):
                 pass
         return res
 
+    """
+    get_modules()
 
+    return dictionary of modules
+    """
     def get_modules(self):
+        res = []
         try:
-            res = self.config[u'Modules']
-            print res
+            res = self.config[ u'Modules' ]
         except KeyError:
             if __debug__:
-                print self.msg_name + "Can not found modules"
+                print self.debug_module + "Can not found modules"
             else:
                 pass
         return res

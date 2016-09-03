@@ -72,6 +72,4 @@ source_group ( "Source Files" FILES ${SOURCES} )
 
 add_executable( ${PROJECT} ${HEADRES} ${SOURCES} )
 
-#target_link_libraries( ${PROJECT} python2.7 "-dynamic -xlinker -export-dynamic" )
-
 target_link_libraries( ${PROJECT} python2.7 )

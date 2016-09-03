@@ -36,7 +36,9 @@ void embedding_python_api::py_import_module( const std::string &module_name )
     pModule = PyImport_Import( pName );
     if( !pModule )
     {
+#ifdef _DEBUG
         PyErr_Print();
+#endif
         throw std::runtime_error( "Can not import module" );
     }
 }
@@ -68,7 +70,7 @@ void embedding_python_api::py_function_call( const std::string &function_name, c
 #ifdef _DEBUG
             PyErr_Print();
 #endif //_DEBUG
-            throw std::runtime_error("");
+            throw std::logic_error( "Py function error" + function_name );
         }
     }
     else
@@ -76,24 +78,25 @@ void embedding_python_api::py_function_call( const std::string &function_name, c
 #ifdef _DEBUG
         PyErr_Print();
 #endif //_DEBUG
-        throw server_config_exception("");
+        throw std::logic_error( "Py module error" );
     }
 }
 
 void embedding_python_api::py_class_instance( const std::string &class_name )
 {
     assert( pModule );
+
     if( pModule )
     {
         PyObject *pDict = PyModule_GetDict( pModule );
         if( pDict )
         {
-            assert( !class_name.empty( ));
+            assert( !class_name.empty() );
             //Получение по имени узказатель на класс из модуля python
-            PyObject *pClass = PyDict_GetItemString( pDict,class_name.c_str( ));
+            PyObject *pClass = PyDict_GetItemString( pDict, class_name.c_str() );
             if( pClass )
             {
-                if( PyCallable_Check( pClass ))
+                if( PyCallable_Check( pClass ) )
                 {
                     pInstance = PyObject_CallObject( pClass, nullptr );
                 }

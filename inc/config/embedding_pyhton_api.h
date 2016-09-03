@@ -9,6 +9,7 @@
 #define _EMBEDDING_PYTHON_API_H_
 
 #include <python2.7/Python.h>
+#include <map>
 #include <vector>
 #include <string>
 #include <stdexcept>
@@ -78,6 +79,8 @@ public:
     template <class... Args>
     void py_class_method_call( const std::string& method_name, std::string& ret_value, char *format, Args... args );
 
+    template <class... Args>
+    void py_class_method_call( const std::string& method_name, std::map<std::string, std::string> &ret_value, char *args_format, Args... args );
 
     embedding_python_api( const embedding_python_api& copy ) = delete;
     embedding_python_api& operator=( const embedding_python_api& copy ) = delete;

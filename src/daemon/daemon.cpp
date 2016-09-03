@@ -29,7 +29,7 @@ void daemon_tool::init_config()
 #ifdef _DEBUG
         const config_struct* cfg = server_config::get_instance()->get_config();
         if( cfg )
-            cfg->server_.print_to_console();
+            cfg->print_to_console();
 #endif //_DEBUG
     }
     catch( const server_config_exception& ex )
@@ -66,7 +66,7 @@ void daemon_tool::init_error_log( )
 
 void daemon_tool::start_daemon()
 {
-    std::unique_ptr<process_creator> process_creator(new daemon_process_creator());
+    std::unique_ptr<process_creator> process_creator( std::make_unique<daemon_process_creator>() );
     std::unique_ptr<process> process(process_creator->get_process());
 
     pid_t pid = process_creator->create_process();

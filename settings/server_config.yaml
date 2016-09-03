@@ -14,14 +14,14 @@ Server:
 
  #--- Основные директрии сервера ---
  Directories:
-  document_root: '/var/www/web_server'                #корневая директория
+  document_root: '/var/www/web_server'                 #корневая директория
 
  #--- Настрйоки лог файлов ---
  Logs:
-  error_log: '/var/log/web_server/error_log'          #директрия до файла ошибок
-  access_log: '/var/log/web_server/access_log'        #директрия для файла выолненных действий
+  error_log: '/var/log/web_server/error_log'           #директрия до файла ошибок
+  access_log: '/var/log/web_server/access_log'         #директрия для файла выолненных действий
 
 #--- Настройки дополнительных модулей сервера
 Modules:
  #--- Модуль CGI
- mod_CGI: 'var/www/web_server/config/mods-avaible'    #конфиг модуля CGI
+ mod_CGI: 'var/www/web_server/config/mods-avaible'     #конфиг модуля CGI
