@@ -1,5 +1,6 @@
 #include "server_config.h"
 #include "server_config_exception.h"
+#include "edit_directories.h"
 #include "types.h"
 
 #include <cstring>
@@ -289,10 +290,10 @@ void server_config::get_mod_CGI( const std::unique_ptr<embedding_python_api>& py
 const std::string server_config::get_py_module_path() noexcept
 {
     std::string res = get_current_dir_name();
-    dell_last_dir( res );
-    dell_last_dir( res );
-    add_dir( res, "src" );
-    add_dir( res, "config" );
+    edit_directories::rm_last_folder( res );
+    edit_directories::rm_last_folder( res );
+    edit_directories::add_new_folder( res, "src" );
+    edit_directories::add_new_folder( res, "config" );
 
     return res;
 }

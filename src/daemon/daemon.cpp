@@ -7,6 +7,7 @@
 #include "daemon_process_creator.h"
 #include "current_system_info.h"
 #include "server_config_exception.h"
+#include "edit_directories.h"
 
 #include <cstring>
 
@@ -16,14 +17,14 @@ void daemon_tool::init_config()
     {
         /* В настоящей реализации, файл конфигурации сервера
            находиться в папке ../web_server/settings/server_config.yaml
-           директория вычисляется относительно испольняемного файла из папки web_server/build/bin
+           директория вычисляется относительно испольняемного файла из папки /web_server/build/bin
         */
         std::string path = current_system_info::get_current_path();
-        dell_last_dir( path );
-        dell_last_dir( path );
-        dell_last_dir( path );
-        add_dir( path, "settings" );
-        add_dir( path, "server_config.yaml" );
+        edit_directories::rm_last_folder( path );
+        edit_directories::rm_last_folder( path );
+        edit_directories::rm_last_folder( path );
+        edit_directories::add_new_folder( path, "settings" );
+        edit_directories::add_new_folder( path, "server_config.yaml" );
         server_config::get_instance()->load_config_file( path );
 
 #ifdef _DEBUG
