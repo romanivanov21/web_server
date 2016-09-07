@@ -20,9 +20,6 @@ public:
      */
     static error_log* get_instance() noexcept;
 
-    void init_log_file(const std::string& file_name) override;
-    void save_log(const std::string& msg) override;
-
     error_log(const error_log& copy) = delete;
     error_log& operator=(const error_log& copy) = delete;
 
@@ -35,8 +32,6 @@ private:
 
     friend class destroyer_singleton<error_log>;
 
-private:
-    std::string log_filename_;
 };
 
 #endif //_ERROR_LOG_H_

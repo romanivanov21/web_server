@@ -9,6 +9,8 @@
 
 #include <string>
 
+#define DATA_TIME_SIZE 80
+
 static int default_error_code = -1;
 
 enum state_process { CHILD_PROCESS = 0, ERROR_PROCESS = -1 };

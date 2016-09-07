@@ -8,6 +8,7 @@
 #define _SERVER_LOG_H_
 
 #include <string>
+#include <mutex>
 
 class server_log
 {
@@ -22,31 +23,43 @@ public:
      *
      * @throw std::exception
      */
-    virtual void init_log_file(const std::string& file_name) = 0;
+    void init_log_file(const std::string& file_name);
 
     /**
      * @brief сохранение лога в файл
      *
      * @param msg сообщение в записи
      */
-    virtual void save_log(const std::string& msg) = 0;
+    virtual bool save_log(const std::string& msg) const noexcept;
 
-    server_log(const server_log& copy) = delete;
-    server_log& operator=(const server_log& copy) = delete;
+    /**
+    * @brief создание структуры записи(время записи, сообщение и т. д.) в лог
+    *
+    * @return формированное сообщение
+    */
+    virtual std::string create_log_struct(const std::string& msg) const noexcept;
 
-protected:
     /**
      * @brief получение даты и времени в необходимом формате типа string
      *
      * @return string строка со временем и датой
      */
-    virtual const std::string get_data_time(void) noexcept;
+
+    std::string get_data_time(void) const noexcept;
+
+    server_log(const server_log& copy) = delete;
+    server_log& operator=(const server_log& copy) = delete;
+
+private:
     /**
-     * @brief создание структуры записи( время записи, сообщение и т. д. ) в лог
-     *
-     * @return формированное сообщение
+     * @brief имя лог файла
      */
-    virtual const std::string create_log_struct(const std::string& msg) noexcept;
+    std::string log_filename_;
+
+    /**
+    * @brief мьютекс для безопасного доступа к лог файлу
+    */
+    mutable std::mutex mut;
 };
 
 #endif //_SERVER_LOG_H_
