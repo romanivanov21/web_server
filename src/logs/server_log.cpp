@@ -20,20 +20,19 @@ bool server_log::save_log(const std::string& msg) const noexcept
 {
     assert(!msg.empty());
 
-    std::string log_msg;
-
-    log_msg = create_log_struct(msg);
+    std::string log_msg = create_log_struct(msg);
 
     std::ofstream stream;
     {
         std::lock_guard<std::mutex> guard(mut);
         stream.open(log_filename_, std::ios::out | std::ios::app );
-        if(!stream)
+        if(!stream.is_open())
         {
             return false;
         }
 
         stream.write(log_msg.c_str(), log_msg.size());
+
         stream.close();
     }
 

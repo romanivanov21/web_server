@@ -10,6 +10,8 @@
 #include <string>
 #include <mutex>
 
+#define DATA_TIME_SIZE 80
+
 class server_log
 {
 public:
@@ -51,14 +53,10 @@ public:
     server_log& operator=(const server_log& copy) = delete;
 
 private:
-    /**
-     * @brief имя лог файла
-     */
+    /*имя лог файла */
     std::string log_filename_;
 
-    /**
-    * @brief мьютекс для безопасного доступа к лог файлу
-    */
+    /*мьютекс для безопасного доступа к лог файлу*/
     mutable std::mutex mut;
 };
 
