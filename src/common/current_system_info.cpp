@@ -1,9 +1,3 @@
-/**
- *  Файл: tcp_connection_creator.h
- *
- *  Описание:
- */
-
 #include "current_system_info.h"
 
 current_system_info::current_system_info( )
