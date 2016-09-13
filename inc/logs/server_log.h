@@ -32,6 +32,7 @@ public:
      *
      * @param msg сообщение в записи
      */
+
     virtual bool save_log(const std::string& msg) const noexcept;
 
     /**

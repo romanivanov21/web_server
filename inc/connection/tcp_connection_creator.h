@@ -1,7 +1,7 @@
 /**
  *  Файл: tcp_connection_creator.h
  *
- *  Описание:
+ *  Описание: создатель экземпляра класса tcp_connection
  */
 
 #ifndef _TCP_CONNECTION_CREATOR_H_
@@ -13,10 +13,15 @@
 class tcp_connection_creator : public connection_creator
 {
  public:
-    tcp_connection_creator( );
-    ~tcp_connection_creator( );
+    tcp_connection_creator() = default;
+    ~tcp_connection_creator() = default;
 
-    connection* get_connection( ) override;
+    /**
+     * @brief получение экземпляра класса tcp_connection
+     *
+     * @return указатель на объект tcp_connection
+     */
+    connection* get_connection() noexcept override;
 };
 
 #endif //_TCP_CONNECTION_CREATOR_H_

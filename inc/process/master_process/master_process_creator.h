@@ -1,7 +1,7 @@
 /**
  * Флайл: master_process_creator.h
  *
- * Описание:
+ * Описание: создатель мастер процесса
  */
 
 #include "process_creator.h"
@@ -12,9 +12,14 @@
 class master_process_creator : public process_creator
 {
 public:
-    master_process_creator();
-    ~master_process_creator();
+    master_process_creator() = default;
+    ~master_process_creator() = default;
 
+    /**
+     * @brief создание нового процесса
+     *
+     * @return pid созданного процесса
+     */
     pid_t create_process() noexcept override;
     process* get_process() noexcept override;
 

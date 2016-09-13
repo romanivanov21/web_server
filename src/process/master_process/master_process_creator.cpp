@@ -3,13 +3,6 @@
 
 #include <unistd.h>
 
-master_process_creator::master_process_creator()
-{
-}
-
-master_process_creator::~master_process_creator()
-{
-}
 
 pid_t master_process_creator::create_process() noexcept
 {
