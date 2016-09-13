@@ -8,6 +8,9 @@
 #define _SERVER_LOG_H_
 
 #include <string>
+#include <mutex>
+
+#define DATA_TIME_SIZE 80
 
 class server_log
 {
@@ -16,42 +19,46 @@ public:
     virtual ~server_log() = default;
 
     /**
-     * @brief создание лог файла
+     * @brief сохранение идентификатора для доступа к log файлу
      *
      * @param file_name директрия до лог файла
      *
      * @throw std::exception
      */
-    virtual void create_log_file( const std::string &file_name );
+    void init_log_file(const std::string& file_name);
 
     /**
-     * @brief сохранения лог в файл
+     * @brief сохранение лога в файл
      *
      * @param msg сообщение в записи
      */
-    virtual void save_log( const std::string& msg ) { };
 
-    server_log( const server_log& copy ) = delete;
-    server_log& operator=( const server_log& copy ) = delete;
-
-protected:
-    /**
-     * @brief виртуальная функция создания
-     *        структуры записи( время записи, сообщение и т. д. ) в лог
-     *
-     * @param msg сообщение в записи
-     */
-    virtual const std::string& create_log_struct( const std::string& msg ) noexcept = 0;
+    virtual bool save_log(const std::string& msg) const noexcept;
 
     /**
-     * @brief запись в файл логгирования
-     *
-     * @param msg запись
-     */
-    void write_log_file( const std::string& msg );
+    * @brief создание структуры записи(время записи, сообщение и т. д.) в лог
+    *
+    * @return формированное сообщение
+    */
+    virtual std::string create_log_struct(const std::string& msg) const noexcept;
 
-protected:
-    std::string file_name_;
+    /**
+     * @brief получение даты и времени в необходимом формате типа string
+     *
+     * @return string строка со временем и датой
+     */
+
+    std::string get_data_time(void) const noexcept;
+
+    server_log(const server_log& copy) = delete;
+    server_log& operator=(const server_log& copy) = delete;
+
+private:
+    /*имя лог файла */
+    std::string log_filename_;
+
+    /*мьютекс для безопасного доступа к лог файлу*/
+    mutable std::mutex mut;
 };
 
 #endif //_SERVER_LOG_H_

@@ -39,29 +39,16 @@ void daemon_tool::init_config()
     }
 }
 
-void daemon_tool::init_access_log( )
+void daemon_tool::init_log()
 {
     try
     {
-        //!TODO функция не реализована
-        access_log::get_instance( ).create_log_file( server_config::get_config()->server_.logs_.access_log_ );
-    }
-    catch( std::runtime_error& ex )
-    {
-        std::cout<<ex.what()<<std::endl;
-    }
-}
-
-void daemon_tool::init_error_log( )
-{
-    try
-    {
-        //!TODO функция не реализована
-        error_log::get_instance( ).create_log_file( server_config::get_config()->server_.logs_.error_log_ );
+        access_log::get_instance()->init_log_file(server_config::get_config()->server_.logs_.access_log_);
+        error_log::get_instance()->init_log_file(server_config::get_config()->server_.logs_.error_log_);
     }
     catch(...)
     {
-        throw;
+
     }
 }
 
@@ -78,18 +65,18 @@ void daemon_tool::start_daemon()
         {
             try
             {
-                access_log::get_instance().save_log( "Создан процесс для управления демоном" );
+                access_log::get_instance()->save_log( "Создан процесс для управления демоном" );
                 process->start_process( );
             }
-            catch (std::runtime_error & ex)
+            catch (...)
             {
-                std::cout << ex.what( ) << std::endl;
+
             }
             break;
         }
         case ERROR_PROCESS:
         {
-            throw std::runtime_error(strerror(errno));
+            throw;
             break;
         }
 
@@ -98,32 +85,32 @@ void daemon_tool::start_daemon()
             const std::string pid_filename = "/var/run/web-server.pid";
             try
             {
-                write_pid( pid,pid_filename );
+                write_pid(pid, pid_filename);
             }
-            catch (std::runtime_error & ex)
+            catch (...)
             {
-                std::cout << ex.what( ) << std::endl;
+
             }
             break;
         }
     }
 }
 
-void daemon_tool::write_pid(const int & pid, const std::string & pid_filename)
+void daemon_tool::write_pid(const int& pid, const std::string& pid_filename)
 {
     FILE * stream = fopen(pid_filename.c_str(), "w+");
     if (!stream)
     {
-        throw std::runtime_error(strerror(errno));
+        throw;
     }
 
     if (!fwrite((std::to_string(pid)).c_str(), (std::to_string(pid)).size(), 1, stream))
     {
-        throw std::runtime_error(strerror(errno));
+        throw;
     }
 
     if (fclose(stream))
     {
-        throw std::runtime_error(strerror(errno));
+        throw;
     }
 }

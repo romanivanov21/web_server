@@ -8,7 +8,7 @@ pid_t daemon_process_creator::create_process() noexcept
     return fork();
 }
 
-process * daemon_process_creator::get_process() noexcept
+process* daemon_process_creator::get_process() noexcept
 {
     return new daemon_process();
 }

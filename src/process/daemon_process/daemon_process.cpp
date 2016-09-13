@@ -6,7 +6,6 @@
 
 #include <memory>
 
-#include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
 
@@ -20,7 +19,7 @@ void daemon_process::start_process() noexcept
     sid = setsid();
     if(sid == default_error_code)
     {
-        throw std::runtime_error(strerror(errno));
+        throw;
     }
 
     chdir("/");
@@ -41,7 +40,7 @@ void daemon_process::start_process() noexcept
         case CHILD_PROCESS:
         {
 
-            process->start_process( );
+            process->start_process();
             break;
         }
 
@@ -74,7 +73,7 @@ void daemon_process::start_process() noexcept
     }
 }
 
-void daemon_process::setup_signal(sigset_t & sigset, siginfo_t & siginfo) noexcept
+void daemon_process::setup_signal(sigset_t& sigset, siginfo_t& siginfo) noexcept
 {
     // настраиваем сигналы которые будем обрабатывать
     sigemptyset(&sigset);

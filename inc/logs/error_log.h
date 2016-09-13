@@ -8,40 +8,30 @@
 #define _ERROR_LOG_H_
 
 #include "server_log.h"
+#include "destroyer_singleton.h"
 
 class error_log : public server_log
 {
 public:
-
-    ~error_log() = default;
-
     /**
      * @brief инстансирование единосвенного экземпляра класса singleton
      *
-     * @return ссылка на единственный экземпляр класса error_log
+     * @return указатель на единственный экземпляр класса error_log
      */
-    static error_log& get_instance() noexcept;
+    static error_log* get_instance() noexcept;
 
-    /**
-     * @brief сохранение записи в лог
-     *
-     * @param msg запись
-     */
-    void save_log( const std::string& msg ) override;
-
-    error_log( const error_log& copy ) = delete;
-    error_log& operator=( const error_log& copy ) = delete;
-
-protected:
-    /**
-     * @brief создания структуры записи( время записи, сообщение и т. д. ) в лог
-     *
-     * @return формированное сообщение
-     */
-    const std::string& create_log_struct( const std::string &msg ) noexcept override;
+    error_log(const error_log& copy) = delete;
+    error_log& operator=(const error_log& copy) = delete;
 
 private:
     error_log() = default;
+    ~error_log()= default;
+
+    static error_log* log;
+    static destroyer_singleton<error_log> destroyer;
+
+    friend class destroyer_singleton<error_log>;
+
 };
 
 #endif //_ERROR_LOG_H_

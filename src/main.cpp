@@ -11,7 +11,7 @@
 #include <memory>
 #include <iostream>
 
-int main( int argc, char **argv )
+int main(int argc, char* argv[])
 {
     try
     {
@@ -28,8 +28,7 @@ int main( int argc, char **argv )
 
     try
     {
-        daemon_tool::init_access_log( );
-        daemon_tool::init_error_log( );
+        daemon_tool::init_log();
     }
     catch(...)
     {
@@ -39,11 +38,11 @@ int main( int argc, char **argv )
     std::shared_ptr<daemon_tool> daemon(new daemon_tool);
     try
     {
-        daemon->start_daemon( );
+        daemon->start_daemon();
     }
-    catch (std::runtime_error & ex)
+    catch (...)
     {
-        std::cout << ex.what( ) << std::endl;
+
     }
 
     return 0;
