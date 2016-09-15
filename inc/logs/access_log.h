@@ -20,6 +20,9 @@ public:
      */
     static access_log* get_instance() noexcept;
 
+    void init_log_file( const std::string& file_name ) override;
+
+
     access_log(const access_log& copy) = delete;
     access_log& operator=(const access_log& copy) = delete;
 
@@ -27,10 +30,10 @@ private:
     access_log() = default;
     ~access_log()= default;
 
-    static access_log* log;
-    static destroyer_singleton<access_log> destroyer;
-
     friend class destroyer_singleton<access_log>;
+
+    static destroyer_singleton<access_log> destroyer_;
+    static access_log* log_;
 };
 
 #endif //_ACCESS_LOG_H_

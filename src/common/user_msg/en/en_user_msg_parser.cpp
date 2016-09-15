@@ -27,4 +27,7 @@ const std::string en_user_msg_parser::en_user_msg_[] =
     "Can not found struct 'Connection'",                      // msg_connection_not_found
     "Can not found struct 'Directories'",                     // msg_directories_not_found
     "Can not found struct 'Logs'",                            // msg_logs_not_found
+    "Can not create error log file",                          // msg_init_error_log_err
+    "Can not create access log file",                         // msg_init_access_log_err
+    "System error. Can not to start server"                   // msg_start_daemon_err
 };

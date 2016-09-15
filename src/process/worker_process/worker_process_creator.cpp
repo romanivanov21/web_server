@@ -1,7 +1,6 @@
 #include "worker_process_creator.h"
 #include "worker_process.h"
 
-#include <sys/types.h>
 #include <unistd.h>
 
 pid_t worker_process_creator::create_process() noexcept

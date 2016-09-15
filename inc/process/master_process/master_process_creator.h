@@ -21,6 +21,12 @@ public:
      * @return pid созданного процесса
      */
     pid_t create_process() noexcept override;
+
+    /**
+     *  @brief
+     *
+     *  @return
+     */
     process* get_process() noexcept override;
 
     master_process_creator( const master_process_creator &copy ) = delete;

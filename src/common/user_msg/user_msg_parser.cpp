@@ -2,7 +2,7 @@
 #include "en_user_msg_parser.h"
 
 user_msg_parser* user_msg_parser::instance_ = nullptr;
-singleton_destroyer<user_msg_parser> user_msg_parser::destroyer_;
+destroyer_singleton<user_msg_parser> user_msg_parser::destroyer_;
 
 user_msg_parser* user_msg_parser::get_instance() noexcept
 {

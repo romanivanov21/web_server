@@ -26,6 +26,9 @@ enum msg_type
     msg_connection_not_found,
     msg_directories_not_found,
     msg_logs_not_found,
+    msg_init_error_log_err,
+    msg_init_access_log_err,
+    msg_start_daemon_err,
 
     msg_end //последний элемент перечисления
 };

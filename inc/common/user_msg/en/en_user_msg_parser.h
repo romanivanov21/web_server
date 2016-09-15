@@ -9,7 +9,7 @@
 #define _EN_USER_MSG_PARSER_H_
 
 #include "user_msg_parser.h"
-#include "singleton_destroyer.h"
+#include "destroyer_singleton.h"
 
 class en_user_msg_parser : public user_msg_parser
 {

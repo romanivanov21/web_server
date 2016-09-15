@@ -48,7 +48,10 @@ set( SOURCES ../src/main.cpp
         ../src/config/embedding_python_api.cpp
         ../src/common/user_msg/user_msg_parser.cpp
         ../src/common/user_msg/en/en_user_msg_parser.cpp
-        ../src/common/edit_directories.cpp )
+        ../src/common/edit_directories.cpp
+        ../src/logs/server_log_exception.cpp
+        ../src/daemon/daemon_tool_exception.cpp
+        ../src/common/console_show.cpp )
 
 include_directories ( ../inc
         ../inc/common

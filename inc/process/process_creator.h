@@ -32,6 +32,8 @@ public:
 
     process_creator(const process_creator & copy) = delete;
     process_creator & operator=(const process_creator & copy) = delete;
+
+    enum state_process { CHILD_PROCESS = 0, ERROR_PROCESS = -1 };
 };
 
 #endif //_PROCESS_CREATOR_H_

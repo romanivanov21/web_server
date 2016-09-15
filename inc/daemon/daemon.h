@@ -16,15 +16,26 @@ public:
     daemon_tool() = default;
     ~daemon_tool() = default;
 
+    /**
+     * @brief инициализация конфигурацию сервреа
+     *
+     * @throw server_config_exception
+     */
     static void init_config();
+
+    /**
+     * @brief инициализция лог файлов
+     *
+     * @throw server_log_exception
+     */
     static void init_log();
 
     /**
      * @brief перевод программы в режим демона
      *
-     * @throw std::runtime_error
+     * @throw daemon_tools_error
      */
-    void start_daemon();
+    void start_daemon() const;
 
     daemon_tool(const daemon_tool & copy) = delete;
     daemon_tool & operator=(const daemon_tool & copy) = delete;
@@ -35,10 +46,9 @@ private:
      *
      * @param pid_filename имя файла для записи номера pid
      *
-     * @throw std::runtime_error
+     * @return true если успешно записно в файл, false иначе
      */
-    void write_pid(const int & pid, const std::string & pid_filename);
-
+    bool write_pid( const int & pid, const std::string & pid_filename ) const noexcept;
 };
 
 #endif //_DAEMON_H_

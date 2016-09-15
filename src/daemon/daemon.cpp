@@ -1,13 +1,16 @@
 #include "types.h"
+#include "daemon_process.h"
 #include "daemon.h"
 #include "error_log.h"
 #include "access_log.h"
 #include "server_config.h"
-#include "master_process_creator.h"
+#include "process_creator.h"
 #include "daemon_process_creator.h"
 #include "current_system_info.h"
 #include "server_config_exception.h"
 #include "edit_directories.h"
+#include "daemon_tool_exception.h"
+#include "serevr_log_exception.h"
 
 #include <cstring>
 
@@ -44,73 +47,64 @@ void daemon_tool::init_log()
     try
     {
         access_log::get_instance()->init_log_file(server_config::get_config()->server_.logs_.access_log_);
+#ifdef _DEBUG
+#endif //_DEBUG
         error_log::get_instance()->init_log_file(server_config::get_config()->server_.logs_.error_log_);
     }
-    catch(...)
+    catch( const server_log_exception& ex )
     {
-
+        throw ex;
     }
 }
 
-void daemon_tool::start_daemon()
+void daemon_tool::start_daemon() const
 {
-    std::unique_ptr<process_creator> process_creator( std::make_unique<daemon_process_creator>() );
-    std::unique_ptr<process> process(process_creator->get_process());
+    std::unique_ptr<process_creator> process_creator = std::make_unique<daemon_process_creator>();
+    std::unique_ptr<process> process( process_creator->get_process() );
 
     pid_t pid = process_creator->create_process();
 
-    switch (pid)
+    switch ( pid )
     {
-        case CHILD_PROCESS:
+        case process_creator::CHILD_PROCESS:
         {
-            try
-            {
-                access_log::get_instance()->save_log( "Создан процесс для управления демоном" );
-                process->start_process( );
-            }
-            catch (...)
-            {
-
-            }
+            access_log::get_instance()->save_log( "Created process to control the demon" );
+            process->start_process();
             break;
         }
-        case ERROR_PROCESS:
+        case process_creator::ERROR_PROCESS:
         {
-            throw;
+            error_log::get_instance()->save_log( "Create process error" );
+            throw daemon_tool_exception( msg_type::msg_system_error );
             break;
         }
-
         default:
         {
             const std::string pid_filename = "/var/run/web-server.pid";
-            try
+            if( write_pid( pid, pid_filename ) )
             {
-                write_pid(pid, pid_filename);
+                access_log::get_instance()->save_log( "Save pid: " + std::to_string( pid ) + " to file" );
             }
-            catch (...)
+            else
             {
-
+                error_log::get_instance()->save_log( "Can not save pid: " + std::to_string( pid ) + " to file" );
+                //TODO: необходимо завершить созданный процесс, пока известен его pid, так как не сомгли сохранить его в файл
+                throw daemon_tool_exception( msg_type::msg_start_daemon_err );
             }
-            break;
         }
     }
 }
 
-void daemon_tool::write_pid(const int& pid, const std::string& pid_filename)
+bool daemon_tool::write_pid( const int& pid, const std::string& pid_filename ) const noexcept
 {
-    FILE * stream = fopen(pid_filename.c_str(), "w+");
-    if (!stream)
-    {
-        throw;
-    }
+    assert( !pid_filename.empty() );
 
-    if (!fwrite((std::to_string(pid)).c_str(), (std::to_string(pid)).size(), 1, stream))
+    FILE* stream = fopen( pid_filename.c_str(), "w+");
+    bool res = false;
+    if( stream )
     {
-        throw;
+        res = ( fwrite( ( std::to_string( pid ) ).c_str(), 1, ( std::to_string( pid ) ).size(), stream ) == ( std::to_string( pid ) ).size() );
+        fclose( stream );
     }
-
-    if (fclose(stream))
-    {
-        throw;
-    }
+    return res;
 }

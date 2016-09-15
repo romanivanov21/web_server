@@ -5,7 +5,7 @@
 
 #include <cstring>
 
-singleton_destroyer<server_config> server_config::destroyer_;
+destroyer_singleton<server_config> server_config::destroyer_;
 
 config_struct* server_config::cfg_ = nullptr;
 

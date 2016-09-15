@@ -10,7 +10,7 @@
 #define _SERVER_CONFIG_H_
 
 #include "embedding_pyhton_api.h"
-#include "singleton_destroyer.h"
+#include "destroyer_singleton.h"
 #include "config_struct.h"
 
 #include <string>
@@ -168,7 +168,7 @@ protected:
     void get_mod_CGI( const std::unique_ptr<embedding_python_api>& python );
 
 protected:
-    friend class singleton_destroyer<server_config>;
+    friend class destroyer_singleton<server_config>;
 
     /**
      * @brief встраиваемого python модуля директория
@@ -185,7 +185,7 @@ protected:
     static config_struct *cfg_;
 
     static server_config* instance_;
-    static singleton_destroyer<server_config> destroyer_;
+    static destroyer_singleton<server_config> destroyer_;
 };
 
 #endif //_SERVER_CONFIG_H_

@@ -9,7 +9,7 @@
 #define _USER_MSG_PARSER_H_
 
 #include "msg_type.h"
-#include "singleton_destroyer.h"
+#include "destroyer_singleton.h"
 
 #include <string>
 
@@ -38,7 +38,7 @@ public:
 
 private:
     static user_msg_parser* instance_;
-    static singleton_destroyer<user_msg_parser> destroyer_;
+    static destroyer_singleton<user_msg_parser> destroyer_;
 };
 
 #endif //_USER_MSG_PARSER_H_

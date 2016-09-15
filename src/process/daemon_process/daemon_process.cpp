@@ -37,14 +37,14 @@ void daemon_process::start_process() noexcept
 
     switch(pid)
     {
-        case CHILD_PROCESS:
+        case process_creator::CHILD_PROCESS:
         {
 
             process->start_process();
             break;
         }
 
-        case ERROR_PROCESS:
+        case process_creator::ERROR_PROCESS:
         {
             break;
         }

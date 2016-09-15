@@ -17,8 +17,6 @@ class server_config_exception : public std::exception
     server_config_exception( msg_type type ) noexcept;
     ~server_config_exception() = default;
 
-
-
     /**
      * @brief получение информации об исключении
      *
