@@ -5,44 +5,59 @@
 #include <fstream>
 #include <iostream>
 
-bool server_log::save_log( const std::string& msg ) const noexcept
+void server_log::init_log_file(const std::string& file_name)
 {
-    assert( !msg.empty() );
+    assert(!file_name.empty());
+    log_filename_ = file_name;
 
-    bool res = false;
-    std::string log_msg = create_log_struct( msg );
+    if (!save_log("Logfile initialization complete"))
+    {
+        throw;
+    }
+}
+
+bool server_log::save_log(const std::string& msg) const noexcept
+{
+    assert(!msg.empty());
+
+    std::string log_msg = create_log_struct(msg);
 
     std::ofstream stream;
     {
-        std::lock_guard<std::mutex> guard( mut_ );
-        stream.open( filename_, std::ios::out | std::ios::app );
-        if( stream.is_open() )
+        std::lock_guard<std::mutex> guard(mut_);
+        stream.open(log_filename_, std::ios::out | std::ios::app );
+        if(!stream.is_open())
         {
-            stream.write( log_msg.c_str(),log_msg.size() );
-            res = true;
-            stream.close();
+            return false;
         }
+
+        stream.write(log_msg.c_str(), log_msg.size());
+
+        stream.close();
     }
-    return res;
+
+    return true;
 }
 
-const std::string server_log::create_log_struct( const std::string& msg ) const noexcept
+std::string server_log::create_log_struct(const std::string& msg) const noexcept
 {
-    assert( !msg.empty() );
+    assert(!msg.empty());
 
-    return get_data_time() + msg + "\n";
+    std::string new_msg = get_data_time() + msg + "\n";
+
+    return new_msg;
 }
 
-std::string server_log::get_data_time() const noexcept
+std::string server_log::get_data_time(void) const noexcept
 {
-    char data_time_[DATA_TIME_SIZE];
+    char data_time[time_length_];
     time_t raw_time;
     struct tm* time_info;
 
-    time( &raw_time );
-    time_info = localtime( &raw_time );
+    time(&raw_time);
+    time_info = localtime(&raw_time);
 
-    strftime( data_time_, DATA_TIME_SIZE, "[%d-%m-%Y %I:%M:%S] ", time_info );
+    strftime(data_time, time_length_, "[%d-%m-%Y %I:%M:%S] ", time_info);
 
-    return data_time_;
+    return data_time;
 }

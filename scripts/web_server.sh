@@ -1,7 +1,7 @@
 #!/bin/sh
-# web-server daemon
+# echo-server daemon
 
-NAME=web-server
+NAME=echo-server
 PATH_DAEMON=/usr/local/bin/
 DAEMON=$NAME
 PATH_PIDFILE=/var/run/
@@ -11,8 +11,12 @@ PIDFILE=$NAME.pid
 case "$1" in 
 
     start) 
-        $DAEMON
-        printf "%-50s\n" "Starting $DAEMON..."
+        cd $PATH_DAEMON
+        if [ ! -f $DAEMON ]; then
+            echo "run file $DAEMON not found"
+        else
+            $DAEMON
+        fi
         ;;
 
     status)
@@ -33,9 +37,7 @@ case "$1" in
     stop) 
         cd $PATH_PIDFILE
         kill $(cat $PIDFILE)
-        printf "%-50s\n" "[ ok ] PID=$(cat $PIDFILE) kill"
         rm -f $PIDFILE
-        printf "%-50s\n" "Stopping $DAEMON..."
         ;;
 
     restart)
