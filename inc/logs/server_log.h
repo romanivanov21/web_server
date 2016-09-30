@@ -23,40 +23,38 @@ public:
      *
      * @throw std::exception
      */
-    virtual void init_log_file( const std::string& file_name ) = 0;
+    void init_log_file(const std::string& file_name);
 
     /**
      * @brief сохранение лога в файл
      *
      * @param msg сообщение в записи
      */
+    virtual bool save_log(const std::string& msg) const noexcept;
 
-    virtual bool save_log( const std::string& msg ) const noexcept;
+    server_log(const server_log& copy) = delete;
+    server_log& operator=(const server_log& copy) = delete;
 
-    /**
-    * @brief создание структуры записи(время записи, сообщение и т. д.) в лог
-    *
-    * @return формированное сообщение
-    */
-    virtual const std::string create_log_struct( const std::string& msg ) const noexcept;
-
+private:
     /**
      * @brief получение даты и времени в необходимом формате типа string
      *
      * @return string строка со временем и датой
      */
+    std::string get_data_time(void) const noexcept;
 
-    std::string get_data_time() const noexcept;
-
-    server_log(const server_log& copy) = delete;
-    server_log& operator=(const server_log& copy) = delete;
-
-protected:
-    /*имя лог файла */
-    std::string filename_;
+    /**
+     * @brief создание структуры записи( время записи, сообщение и т. д. ) в лог
+     *
+     * @return формированное сообщение
+     */
+    virtual std::string create_log_struct(const std::string& msg) const noexcept;
 
 private:
-    /*мьютекс для безопасного доступа к лог файлу*/
+    // имя лог файла
+    std::string log_filename_;
+
+    //мьютекс для безопасного доступа к лог файлу
     mutable std::mutex mut_;
 
     //размер бефера для хранения даты и времени в формате strftime

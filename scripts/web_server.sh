@@ -1,7 +1,7 @@
 #!/bin/sh
-# web-server daemon
+# echo-server daemon
 
-NAME=web-server
+NAME=echo-server
 PATH_DAEMON=/usr/local/bin/
 DAEMON=$NAME
 PATH_PIDFILE=/var/run/
