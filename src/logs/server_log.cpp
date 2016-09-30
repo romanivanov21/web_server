@@ -35,14 +35,14 @@ const std::string server_log::create_log_struct( const std::string& msg ) const 
 
 std::string server_log::get_data_time() const noexcept
 {
-    char data_time_[DATA_TIME_SIZE];
+    char data_time_[time_length_];
     time_t raw_time;
     struct tm* time_info;
 
     time( &raw_time );
     time_info = localtime( &raw_time );
 
-    strftime( data_time_, DATA_TIME_SIZE, "[%d-%m-%Y %I:%M:%S] ", time_info );
+    strftime( data_time_, time_length_, "[%d-%m-%Y %I:%M:%S] ", time_info );
 
     return data_time_;
 }

@@ -10,8 +10,6 @@
 #include <string>
 #include <mutex>
 
-#define DATA_TIME_SIZE 80
-
 class server_log
 {
 public:
@@ -60,6 +58,9 @@ protected:
 private:
     /*мьютекс для безопасного доступа к лог файлу*/
     mutable std::mutex mut_;
+
+    //размер бефера для хранения даты и времени в формате strftime
+    static const int time_length_ = 80;
 };
 
 #endif //_SERVER_LOG_H_
