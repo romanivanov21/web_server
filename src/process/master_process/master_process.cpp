@@ -16,7 +16,7 @@ master_process::master_process()
 
 void master_process::start_process() noexcept
 {
-
+    
 }
 
 void master_process::set_config() noexcept

@@ -5,4 +5,5 @@
 /build/Makefile
 *.swp
 /build/.idea
+/http_lib/.idea
 *.pyc

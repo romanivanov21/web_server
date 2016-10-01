@@ -35,7 +35,7 @@ public:
 
     user_msg_parser( const user_msg_parser& copy ) = delete;
     user_msg_parser& operator=( const user_msg_parser& copy ) = delete;
-
+    
 private:
     static user_msg_parser* instance_;
     static destroyer_singleton<user_msg_parser> destroyer_;
