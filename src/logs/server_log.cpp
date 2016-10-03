@@ -50,7 +50,6 @@ std::string server_log::create_log_struct(const std::string& msg) const noexcept
 
 std::string server_log::get_data_time(void) const noexcept
 {
-
     char data_time_[time_length_];
     time_t raw_time;
     struct tm* time_info;
