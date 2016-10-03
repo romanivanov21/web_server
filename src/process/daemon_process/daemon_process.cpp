@@ -1,5 +1,6 @@
 #include "types.h"
 #include "process.h"
+#include "access_log.h"
 #include "daemon_process.h"
 #include "process_creator.h"
 #include "master_process_creator.h"
@@ -57,12 +58,14 @@ void daemon_process::start_process() noexcept
             if(siginfo.si_signo == SIGCHLD)   // если пришел сигнал от потомка
             {
                 waitpid(pid, 0, WNOHANG);
-                exit(0);
+                access_log::get_instance()->save_log("Stoped echo-server");
+                exit(EXIT_SUCCESS);
             }
             else if(siginfo.si_signo == SIGTERM) // если пришел сигнал о завершении программы
             {
                 kill(pid, SIGKILL);
-                exit(0);
+                access_log::get_instance()->save_log("Stoped echo-server");
+                exit(EXIT_SUCCESS);
             }
             else
             {

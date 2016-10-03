@@ -80,17 +80,18 @@ void daemon_tool::start_daemon() const
         }
         default:
         {
-            const std::string pid_filename = "/var/run/web-server.pid";
-            if( write_pid( pid, pid_filename ) )
+            const std::string pid_filename = "/var/run/echo-server.pid";
+            if(write_pid(pid, pid_filename))
             {
-                access_log::get_instance()->save_log( "Save pid: " + std::to_string( pid ) + " to file" );
+                access_log::get_instance()->save_log("Save pid: " + std::to_string( pid ) + " to file");
             }
             else
             {
-                error_log::get_instance()->save_log( "Can not save pid: " + std::to_string( pid ) + " to file" );
-                //TODO: необходимо завершить созданный процесс, пока известен его pid, так как не сомгли сохранить его в файл
-                throw daemon_tool_exception( msg_type::msg_start_daemon_err );
+                error_log::get_instance()->save_log("Can not save pid: " + std::to_string(pid) + " to file");
+                error_log::get_instance()->save_log("Stoped echo-server");
+                kill(pid, SIGKILL);
             }
+            break;
         }
     }
 }
