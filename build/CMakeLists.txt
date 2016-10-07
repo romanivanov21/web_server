@@ -32,8 +32,6 @@ set( SOURCES ../src/main.cpp
         ../src/logs/error_log.cpp
         ../src/logs/access_log.cpp
         ../src/logs/server_log.cpp
-        ../src/connection/tcp_connection_creator.cpp
-        ../src/connection/tcp_connection.cpp
         ../src/config/server_config_exception.cpp
         ../src/process/daemon_process/daemon_process.cpp
         ../src/process/daemon_process/daemon_process_creator.cpp
@@ -51,7 +49,9 @@ set( SOURCES ../src/main.cpp
         ../src/common/edit_directories.cpp
         ../src/logs/server_log_exception.cpp
         ../src/daemon/daemon_tool_exception.cpp
-        ../src/common/console_show.cpp )
+        ../src/common/console_show.cpp
+        ../src/connection/tcp_connection/tcp_connection.cpp
+        ../src/connection/tcp_connection/tcp_connection_creator.cpp)
 
 include_directories ( ../inc
         ../inc/common
@@ -60,6 +60,7 @@ include_directories ( ../inc
         ../inc/config
         ../inc/logs
         ../inc/connection
+        ../inc/connection/tcp_connection
         ../inc/process/daemon_process
         ../inc/process/master_process
         ../inc/process/worker_process
