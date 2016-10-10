@@ -10,6 +10,8 @@
 #include <unistd.h>
 #include <netinet/in.h>
 
+#include <vector>
+
 class connection
 {
 public:
@@ -19,26 +21,26 @@ public:
     /**
      * @brief создание слушающего сокета
      */
-    virtual void create_socket(const char* addr, uint16_t port) = 0;
+    virtual void create_connection(const char* addr, uint16_t port) = 0;
 
     /**
      * @brief ожидание подключения
      */
-    virtual void wait_accept() = 0;
+    virtual void wait_to_connect() = 0;
 
     /**
      * @brief прием данных
      *
      * @retun количество принятых байт
      */
-    virtual size_t recv_data(char* buffer, const int& len) = 0;
+    virtual size_t recv_data(std::vector<char> buffer, const int& len) = 0;
 
     /**
      * @brief передача данных
      *
      * @retun количество переданных байт
      */
-    virtual size_t send_data(char* buffer, const int& len) = 0;
+    virtual size_t send_data(std::vector<char> buffer, const int& len) = 0;
 
     /**
      * @brief получение номера сокета

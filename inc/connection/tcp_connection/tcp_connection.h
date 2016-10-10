@@ -21,26 +21,26 @@ public:
     /**
      * @brief создание слушающего tcp сокета
      */
-    virtual void create_socket(const char* addr, uint16_t port) override;
+    virtual void create_connection(const char* addr, uint16_t port) override;
 
     /**
      * @brief ожидание tcp подключения
      */
-    virtual void wait_accept() override;
+    virtual void wait_to_connect() override;
 
     /**
      * @brief прием данных
      *
      * @retun количество принятых байт
      */
-    virtual size_t recv_data(char* buffer, const int& len) override;
+    virtual size_t recv_data(std::vector<char> buffer, const int& len) override;
 
     /**
      * @brief передача данных
      *
      * @retun количество переданных байт
      */
-    virtual size_t send_data(char* buffer, const int& len) override;
+    virtual size_t send_data(std::vector<char> buffer, const int& len) override;
 
     /**
      * @brief получение номера сокета
@@ -58,8 +58,11 @@ public:
     tcp_connection & operator=(const tcp_connection& copy) = delete;
 
 private:
-    int master_socket;
-    int slave_socket;
+    struct connection_type
+    {
+        int master_socket;
+        int slave_socket;
+    } descriptor;
 };
 
 #endif //_TCP_CONNECTION_H_
