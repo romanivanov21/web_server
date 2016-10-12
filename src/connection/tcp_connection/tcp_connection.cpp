@@ -34,7 +34,7 @@ void tcp_connection::create_connection(std::string ip_addr, uint16_t port)
 
 void tcp_connection::wait_to_connect()
 {
-    if (descriptor.slave_socket = accept(descriptor.master_socket, NULL, NULL) == default_error_code)
+    if ((descriptor.slave_socket = accept(descriptor.master_socket, NULL, NULL)) == default_error_code)
     {
         throw;
     }
