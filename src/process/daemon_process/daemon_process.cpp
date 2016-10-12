@@ -52,21 +52,17 @@ void daemon_process::start_process() noexcept
         default:
         {
             // ожидаем поступление сигнала
-            sigwaitinfo(&sigset, &siginfo);
+            sigwaitinfo(&sigset, &siginfo);         // ожидание поступления сигнала
 
-            if(siginfo.si_signo == SIGCHLD)   // если пришел сигнал от потомка
+            if(siginfo.si_signo == SIGCHLD)         // сигнал пришел от потомка
             {
                 waitpid(pid, 0, WNOHANG);
-                exit(0);
+                exit(EXIT_SUCCESS);
             }
-            else if(siginfo.si_signo == SIGTERM) // если пришел сигнал о завершении программы
+            else if(siginfo.si_signo == SIGUSR1)    // сигнал о завершении программы
             {
-                kill(pid, SIGKILL);
-                exit(0);
-            }
-            else
-            {
-                //Обработка неизвестного сигнала
+                kill(pid, SIGTERM);
+                exit(EXIT_SUCCESS);
             }
             break;
         }
@@ -75,14 +71,11 @@ void daemon_process::start_process() noexcept
 
 void daemon_process::setup_signal(sigset_t& sigset, siginfo_t& siginfo) noexcept
 {
-    // настраиваем сигналы которые будем обрабатывать
-    sigemptyset(&sigset);
+    sigemptyset(&sigset);                           // настраиваем сигналы которые будем обрабатывать
 
-    // сигнал запроса завершения процесса
-    sigaddset(&sigset, SIGTERM);
+    sigaddset(&sigset, SIGUSR1);                    // пользовательский сигнал для завершения процесса
 
-    // сигнал посылаемый при изменении статуса дочернего процесса
-    sigaddset(&sigset, SIGCHLD);
+    sigaddset(&sigset, SIGCHLD);                    // сигнал, посылаемый при изменении статуса дочернего процесса
 
     sigprocmask(SIG_BLOCK, &sigset, NULL);
 }

@@ -1,23 +1,34 @@
 #!/bin/sh
-# web-server daemon
 
-NAME=web-server
-PATH_DAEMON=/usr/local/bin/
-DAEMON=$NAME
-PATH_PIDFILE=/var/run/
-PIDFILE=$NAME.pid
-#SCRIPTNAME=/etc/init.d/$NAME
+#The project name
+PROJECT="web_server"
+
+#The pid file name
+PIDFILE="$PROJECT.pid"
+
+#pid file directory 
+PIDFILE_DIR="/var/run/"
+
+#run file directory
+PROJECT_DIR="/usr/local/bin/"
+
+#user signal for stopped programm
+SIGUSR1="-10"
 
 case "$1" in 
 
     start) 
-        $DAEMON
-        printf "%-50s\n" "Starting $DAEMON..."
+        cd $PROJECT_DIR
+        if [ -x $PROJECT ]; then
+            $PROJECT
+        else
+            echo "run file $PROJECT not found"
+        fi
         ;;
 
     status)
-        printf "%-50s" "Checking $DAEMON..."
-        cd $PATH_PIDFILE
+        printf "%-50s" "Checking $PROJECT..."
+        cd $PIDFILE_DIR
         if [ -f $PIDFILE ]; then
             PID=$(cat $PIDFILE)
             if [ -z "`ps axf | grep ${PID} | grep -v grep`" ]; then
@@ -31,11 +42,13 @@ case "$1" in
         ;;
 
     stop) 
-        cd $PATH_PIDFILE
-        kill $(cat $PIDFILE)
-        printf "%-50s\n" "[ ok ] PID=$(cat $PIDFILE) kill"
-        rm -f $PIDFILE
-        printf "%-50s\n" "Stopping $DAEMON..."
+        cd $PIDFILE_DIR
+        if [ -f $PIDFILE ]; then
+            kill $SIGUSR1 $(cat $PIDFILE)
+            rm -f $PIDFILE
+        else 
+            echo "$PIDFILE: No such file"
+        fi
         ;;
 
     restart)

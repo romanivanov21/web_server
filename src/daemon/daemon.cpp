@@ -88,8 +88,7 @@ void daemon_tool::start_daemon() const
             else
             {
                 error_log::get_instance()->save_log( "Can not save pid: " + std::to_string( pid ) + " to file" );
-                error_log::get_instance()->save_log("Stoped echo-server");
-                kill(pid, SIGKILL);
+                kill(pid, SIGTERM);
                 throw daemon_tool_exception( msg_type::msg_start_daemon_err );
             }
         }
