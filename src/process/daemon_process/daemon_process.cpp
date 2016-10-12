@@ -51,7 +51,6 @@ void daemon_process::start_process() noexcept
 
         default:
         {
-            // ожидаем поступление сигнала
             sigwaitinfo(&sigset, &siginfo);         // ожидание поступления сигнала
 
             if(siginfo.si_signo == SIGCHLD)         // сигнал пришел от потомка
