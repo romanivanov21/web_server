@@ -11,6 +11,7 @@
 #include <netinet/in.h>
 
 #include <vector>
+#include <string>
 
 class connection
 {
@@ -21,7 +22,7 @@ public:
     /**
      * @brief создание слушающего сокета
      */
-    virtual void create_connection(const char* addr, uint16_t port) = 0;
+    virtual void create_connection(std::string ip_addr, uint16_t port) = 0;
 
     /**
      * @brief ожидание подключения
@@ -33,14 +34,14 @@ public:
      *
      * @retun количество принятых байт
      */
-    virtual size_t recv_data(std::vector<char> buffer, const int& len) = 0;
+    virtual size_t recv_data(std::vector<char>& buffer) = 0;
 
     /**
      * @brief передача данных
      *
      * @retun количество переданных байт
      */
-    virtual size_t send_data(std::vector<char> buffer, const int& len) = 0;
+    virtual size_t send_data(std::vector<char>& buffer) = 0;
 
     /**
      * @brief получение номера сокета

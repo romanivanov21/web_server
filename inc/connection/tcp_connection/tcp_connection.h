@@ -21,7 +21,7 @@ public:
     /**
      * @brief создание слушающего tcp сокета
      */
-    virtual void create_connection(const char* addr, uint16_t port) override;
+    virtual void create_connection(std::string ip_addr, uint16_t port) override;
 
     /**
      * @brief ожидание tcp подключения
@@ -33,14 +33,14 @@ public:
      *
      * @retun количество принятых байт
      */
-    virtual size_t recv_data(std::vector<char> buffer, const int& len) override;
+    virtual size_t recv_data(std::vector<char>& buffer) override;
 
     /**
      * @brief передача данных
      *
      * @retun количество переданных байт
      */
-    virtual size_t send_data(std::vector<char> buffer, const int& len) override;
+    virtual size_t send_data(std::vector<char>& buffer) override;
 
     /**
      * @brief получение номера сокета

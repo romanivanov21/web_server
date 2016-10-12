@@ -20,7 +20,7 @@ public:
      *
      * @return новый экзкмпляр класса connection
      */
-    virtual connection* get_connection() = 0;
+    virtual connection* get_connection() noexcept = 0;
 
     connection_creator(const connection_creator& copy) = delete;
     connection_creator& operator=(const connection_creator& copy) = delete;
