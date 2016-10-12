@@ -16,7 +16,7 @@ public:
     virtual ~connection_creator() = default;
 
     /**
-     * @brief создание экземпляра класса connection
+     *  @brief получение экземпляра класса connection
      *
      * @return новый экзкмпляр класса connection
      */

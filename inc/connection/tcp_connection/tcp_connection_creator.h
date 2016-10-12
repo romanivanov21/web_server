@@ -16,7 +16,7 @@ public:
     ~tcp_connection_creator() = default;
 
     /**
-     * @brief получение
+     * @brief получение экземпляра класса tcp_connection
      *
      * @return connection* указатель на созданный объект
      */
