@@ -20,6 +20,7 @@ void access_log::init_log_file( const std::string& file_name )
     assert( !file_name.empty() );
 
     filename_ = file_name;
+
     if ( !save_log( "logfile initialization complete" ) )
     {
         throw server_log_exception( msg_type::msg_init_access_log_err );

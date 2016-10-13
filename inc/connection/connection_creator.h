@@ -11,18 +11,18 @@
 
 class connection_creator
 {
- public:
+public:
     connection_creator() = default;
     virtual ~connection_creator() = default;
 
     /**
-     * @brief виртульная функция для получения объекта
-     *        конкретного сетевого соединения
+     *  @brief получение экземпляра класса connection
+     *
+     * @return новый экзкмпляр класса connection
      */
     virtual connection* get_connection() noexcept = 0;
 
-    connection_creator( const connection_creator &copy ) = delete;
-    connection_creator& operator=( const connection_creator &copy ) = delete;
+    connection_creator(const connection_creator& copy) = delete;
+    connection_creator& operator=(const connection_creator& copy) = delete;
 };
-
 #endif //_CONNECTION_CREATOR_H_
