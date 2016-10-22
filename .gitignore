@@ -3,6 +3,7 @@
 /build/CMakeFiles
 /build/cmake_install.cmake
 /build/Makefile
+/build/CTestTestfile.cmake
 *.swp
 /build/.idea
 /http_lib/.idea
