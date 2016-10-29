@@ -36,6 +36,10 @@ case "$1" in
         rm cmake_install.cmake
      fi
 
+     if [[ -f "$BUILD_DIR/CTestTestfile.cmake" ]]; then
+        rm CTestTestfile.cmake
+     fi
+
      cd "$DIR";
 
      ;;
