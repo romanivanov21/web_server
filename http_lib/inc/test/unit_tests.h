@@ -16,8 +16,8 @@ TEST( request001, httpparsertest )
       "\r\n";
     http_request parse_request;
     http_request_parser parser;
-    parser.parse( request, parse_request );
-
+    http_request_parser::request_parse_result  result = parser.parse( request, parse_request );
+    ASSERT_EQ( result, http_request_parser::request_parse_result::COMPLETE );
     ASSERT_EQ( parse_request.method_, "GET" );
     ASSERT_EQ( parse_request.headers_["User-Agent"], "Mozilla/5.0" );
     ASSERT_EQ( parse_request.headers_["Accept"], "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" );

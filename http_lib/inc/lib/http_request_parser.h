@@ -9,6 +9,19 @@
 class http_request_parser
 {
 public:
+    enum class parser_state
+    {
+        method_start = 0
+    };
+
+    enum class request_parse_result
+    {
+        COMPLETE,   // успешно
+        INCOMPLETE, // неуспешно
+        ERROR       // ошибка
+    };
+
+public:
     http_request_parser();
 
     ~http_request_parser() = default;
@@ -18,11 +31,6 @@ public:
     http_request_parser( const http_request_parser& copy ) = delete;
 
     http_request_parser& operator=( const http_request_parser& copy ) = delete;
-
-    enum class parser_state
-    {
-        method_start = 0
-    };
 
 private:
     parser_state state_;

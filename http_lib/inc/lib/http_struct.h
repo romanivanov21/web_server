@@ -9,13 +9,6 @@
 
 #include <string>
 
-enum class request_parse_result
-{
-    COMPLETE,   // успешно
-    INCOMPLETE, // неуспешно
-    ERROR       // ошибка
-};
-
 /* Методы HTTP запроса */
 enum class http_methods : u_int8_t
 {
