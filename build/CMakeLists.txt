@@ -32,8 +32,10 @@ project( ${PROJECT} )
 
 #заголовочные файлы библиотеки http_lib
 include_directories( ../http_lib/inc/lib )
+include_directories( ../inc/common HTTP_LIB_SRC )
 #файлы реализации библиоткеи http_lib
 aux_source_directory( ../http_lib/src/lisb HTTP_LIB_SRC )
+aux_source_directory( ../src/common HTTP_LIB_SRC )
 #статическая библиотека http_lib
 add_library( httpparser STATIC ${HTTP_LIB_SRC} )
 

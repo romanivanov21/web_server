@@ -9,6 +9,13 @@
 
 #include <string>
 
+enum class request_parse_result
+{
+    COMPLETE,   // успешно
+    INCOMPLETE, // неуспешно
+    ERROR       // ошибка
+};
+
 /* Методы HTTP запроса */
 enum class http_methods : u_int8_t
 {
@@ -20,12 +27,6 @@ enum class http_methods : u_int8_t
     DELETE,
     TRACE,
     CONNECT
-};
-
-/* Заголовки HTTP запроса */
-enum class header_fields
-{
-
 };
 
 /* Статурс HTTP запроса */
@@ -96,8 +97,6 @@ enum class http_server_heders
     SetCookie
 };
 
-struct http_struct
-{
-    http_methods method_;
-};
+enum class http_version { HTTP_1_0, HTTP_1_1 };
+
 #endif //_HTTP_STRUCT_H_
