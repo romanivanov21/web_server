@@ -11,9 +11,14 @@ class http_request_parser
 public:
     enum class parser_state
     {
-        start = 0,
+        request_method_begin = 0,
         request_method,
-        request_uri_begin
+        request_uri_begin,
+        request_uri,
+        request_http_version_h,
+        request_http_version_ht,
+        request_http_version_http,
+        request_http_version_separator
     };
 
     enum class request_parse_result
@@ -40,9 +45,38 @@ public:
 
 private:
 
-    http_request_parser::request_parse_result parse_state_start( const char& c, http_request& request );
+    /**
+     *  @brief начала парсинга HTTP метода
+     *
+     *  @param текущий символ из запроса
+     *  @param структра для результата разбора
+     *
+     *  @return результат парсинга
+     */
+    http_request_parser::request_parse_result parse_request_method_begin( const char& c, http_request& request ) noexcept;
 
-    http_request_parser::request_parse_result parse_state_request_method( const char& c, http_request& request );
+    /**
+     *  @brief парсинга HTTP метода
+     *
+     *  @param текущий символ из запроса
+     *  @param структра для результата разбора
+     *
+     *  @return результат парсинга
+     */
+    http_request_parser::request_parse_result parse_request_method( const char& c, http_request& request ) noexcept;
+
+    /**
+     *  @brief начало парсинга URI
+     *
+     *  @param текущий символ из запроса
+     *  @param структра для результата разбора
+     *
+     *  @return результат парсинга
+     */
+    http_request_parser::request_parse_result parse_request_uri_begin( const char& c, http_request& request ) noexcept;
+
+    http_request_parser::request_parse_result parse_request_uri( const char& c, http_request& request ) noexcept;
+
     /**
      * @brief метод для проверки, является ли символ из HTTP запроса допустимым ASCII кодом
      *
