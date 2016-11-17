@@ -8,7 +8,7 @@ struct http_request
 {
     http_request()
       : method_( "" ), uri_( "" ), version_major_( 0 ), version_minor_( 0 ), headers_( 0 ),
-        content_( 0 ), is_alive_( false ) { }
+        content_( "" ), is_alive_( false ) { }
 
     /* HTTP метод */
     std::string method_;

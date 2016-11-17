@@ -77,7 +77,7 @@ enum class status_codes : u_int16_t
     HTTP_VERSION_NOT_SUPPORTED_505 = 505
 };
 
-enum class http_server_heders
+enum class http_server_headers
 {
     Date,
     Server,
