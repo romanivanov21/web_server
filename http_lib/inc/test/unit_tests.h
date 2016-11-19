@@ -27,7 +27,7 @@ TEST( request001, httpparsertest )
 TEST( request002, http_version_test )
 {
     const std::string request1 = "GET /web_server.ru HTTP/1.1\r\n";
-    http_request parse_request ;
+    http_request parse_request;
     http_request_parser parser;
     http_request_parser::request_parse_result result1 = parser.parse( request1, parse_request );
     ASSERT_EQ( parse_request.version_major_, 1 );
@@ -35,7 +35,7 @@ TEST( request002, http_version_test )
 
     const std::string request2 = "GET /web_server.ru HTsdf/213.121";
     http_request_parser::request_parse_result result2 = parser.parse( request2, parse_request );
-    ASSERT_EQ( request2,http_request_parser::request_parse_result::ERROR );
+    ASSERT_EQ( result2 ,http_request_parser::request_parse_result::ERROR );
 }
 
 #endif //_UNIT_TEST_H_
