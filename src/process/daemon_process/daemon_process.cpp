@@ -30,7 +30,7 @@ void daemon_process::start_process() noexcept
 
     setup_signal(sigset, siginfo);
 
-    std::unique_ptr<process_creator> process_creator(new master_process_creator());
+    std::unique_ptr<process_creator> process_creator = std::make_unique<master_process_creator>();
     std::unique_ptr<process> process(process_creator->get_process());
 
     pid_t pid = process_creator->create_process();
