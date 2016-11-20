@@ -34,7 +34,8 @@ public:
         request_header_begin,
         request_header_name,
         request_before_name_space,
-        request_header_value
+        request_header_value,
+        request_header_new_line
     };
 
     enum class request_parse_result
@@ -123,6 +124,8 @@ private:
     http_request_parser::request_parse_result parse_request_before_name_space( const char& c ) noexcept;
 
     http_request_parser::request_parse_result parse_request_header_value( const char& c, http_request& request )noexcept;
+
+    http_request_parser::request_parse_result parse_request_header_new_line( const char& c ) noexcept;
 
     /**
      * @brief метод для проверки, является ли символ из HTTP запроса допустимым ASCII кодом

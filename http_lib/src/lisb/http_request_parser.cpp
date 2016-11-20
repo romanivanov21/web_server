@@ -94,9 +94,19 @@ http_request_parser::request_parse_result http_request_parser::parse( const std:
                 result = parse_request_before_name_space( *it );
                 break;
             }
+            case http_request_parser::parser_state::request_header_name:
+            {
+                result = parse_request_header_name( *it, request );
+                break;
+            }
             case http_request_parser::parser_state::request_header_value:
             {
                 result = parse_request_header_value( *it, request );
+                break;
+            }
+            case http_request_parser::parser_state::request_header_new_line:
+            {
+                result = parse_request_header_new_line( *it );
                 break;
             }
         }
@@ -356,7 +366,10 @@ http_request_parser::request_parse_result http_request_parser::parse_request_hea
         if( ( !current_header_.name_.empty() ) && ( !current_header_.value_.empty() ) )
         {
             std::pair<std::string, std::string> header( current_header_.name_, current_header_.value_ );
+            current_header_.name_.clear();
+            current_header_.value_.clear();
             request.headers_.insert( header );
+            state_ = http_request_parser::parser_state::request_header_new_line;
             result = http_request_parser::request_parse_result::COMPLETE;
         }
     }
@@ -367,6 +380,17 @@ http_request_parser::request_parse_result http_request_parser::parse_request_hea
     else
     {
         current_header_.value_.push_back( c );
+        result = http_request_parser::request_parse_result::COMPLETE;
+    }
+    return result;
+}
+
+http_request_parser::request_parse_result http_request_parser::parse_request_header_new_line( const char &c ) noexcept
+{
+    auto result = http_request_parser::request_parse_result::ERROR;
+    if( c == '\n' )
+    {
+        state_ = http_request_parser::parser_state::request_header_begin;
         result = http_request_parser::request_parse_result::COMPLETE;
     }
     return result;
