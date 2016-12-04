@@ -22,12 +22,6 @@ enum class http_methods : u_int8_t
     CONNECT
 };
 
-/* Заголовки HTTP запроса */
-enum class header_fields
-{
-
-};
-
 /* Статурс HTTP запроса */
 enum class status_codes : u_int16_t
 {
@@ -83,7 +77,7 @@ enum class status_codes : u_int16_t
     HTTP_VERSION_NOT_SUPPORTED_505 = 505
 };
 
-enum class http_server_heders
+enum class http_server_headers
 {
     Date,
     Server,
@@ -96,8 +90,6 @@ enum class http_server_heders
     SetCookie
 };
 
-struct http_struct
-{
-    http_methods method_;
-};
+enum class http_version { HTTP_1_0, HTTP_1_1 };
+
 #endif //_HTTP_STRUCT_H_
