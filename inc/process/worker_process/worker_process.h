@@ -10,7 +10,7 @@
 #include "process.h"
 #include "event_dispatcher.h"
 
-class worker_process : public process, protected event_dispatcher
+class worker_process : public process, protected event_dispatcher<int>
 {
 public:
     worker_process();

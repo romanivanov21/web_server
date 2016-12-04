@@ -5,15 +5,15 @@
 worker_process::worker_process()
 {
     delegate1_= new delegate<void()>( [](){ std::cout<<"worker_process_start"<<std::endl; } );
-    add_event( event::TEST, delegate1_ );
+    event_dispatcher::add_event( event::TEST, delegate1_ );
 }
 
 worker_process::~worker_process()
 {
-    delegate1_;
+    delete delegate1_;
 }
 
 void worker_process::start_process() noexcept
 {
-    notify( event::TEST );
+    event_dispatcher::notify( event::TEST );
 }
