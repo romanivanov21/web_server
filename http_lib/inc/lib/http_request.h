@@ -1,3 +1,9 @@
+/**
+ *  Файл: http_request.h
+ *
+ *  Описание: описание структуры http запроса
+ */
+
 #ifndef _HTTP_REQUEST_H_
 #define _HTTP_REQUEST_H_
 
@@ -8,17 +14,14 @@ struct http_request
 {
     http_request()
       : method_( "" ), uri_( "" ), version_major_( 0 ), version_minor_( 0 ), headers_( 0 ),
-        content_( "" ), is_alive_( false ) { }
+        keep_alive_( false ) { }
 
-    /* HTTP метод */
-    std::string method_;
-    /* URI */
-    std::string uri_;
-    int version_major_;
-    int version_minor_;
-    std::unordered_map<std::string, std::string> headers_;
-    std::string content_;
-    bool is_alive_;
+    std::string method_;                                   // HTTP метод
+    std::string uri_;                                      // URI
+    int version_major_;                                    // Старшее число версии HTTP протокола
+    int version_minor_;                                    // Младшее число версии HTTP протокола
+    std::unordered_map<std::string, std::string> headers_; // Заголовки HTTP протокола
+    bool keep_alive_;                                      // Поддерживать ли постоянное соединение ( для версии меньше HTTP 1.1 )
 };
 
 #endif //_HTTP_REQUEST_H_

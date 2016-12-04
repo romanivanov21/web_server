@@ -1,3 +1,9 @@
+/**
+ *  Файл: http_request_parser.cpp
+ *
+ *  Описание: Реализация класса парсер HTTP проткола
+ */
+
 #include "http_request_parser.h"
 
 #include <cassert>
@@ -107,6 +113,11 @@ http_request_parser::request_parse_result http_request_parser::parse( const std:
             case http_request_parser::parser_state::request_header_new_line:
             {
                 result = parse_request_header_new_line( *it );
+                break;
+            }
+            case http_request_parser::parser_state::request_parse_end:
+            {
+                result = parse_request_end( *it );
                 break;
             }
         }
@@ -290,6 +301,8 @@ http_request_parser::request_parse_result http_request_parser::parse_request_htt
     }
     else if( c == '\r' )
     {
+        ( request.version_minor_ == 1 ) && ( request.version_major_ == 1 ) ?
+             ( request.keep_alive_ = true) : ( request.keep_alive_ = false );
         state_ = parser_state::request_http_version_new_line;
     }
     else
@@ -319,7 +332,7 @@ http_request_parser::request_parse_result http_request_parser::parse_request_hea
     }
     else if( c == '\r' )
     {
-        //TODO
+        state_ = http_request_parser::parser_state::request_parse_end;
     }
     else
     {
@@ -365,6 +378,10 @@ http_request_parser::request_parse_result http_request_parser::parse_request_hea
     {
         if( ( !current_header_.name_.empty() ) && ( !current_header_.value_.empty() ) )
         {
+            if( ( current_header_.name_ == "Connection" ) && ( current_header_.value_ == "Keep-Alive" ) )
+            {
+                request.keep_alive_ = true;
+            }
             std::pair<std::string, std::string> header( current_header_.name_, current_header_.value_ );
             current_header_.name_.clear();
             current_header_.value_.clear();
@@ -379,6 +396,7 @@ http_request_parser::request_parse_result http_request_parser::parse_request_hea
     }
     else
     {
+        //!TODO: можно добвать проверку существования заголовка HTTP при добавления символа current_header_
         current_header_.value_.push_back( c );
         result = http_request_parser::request_parse_result::COMPLETE;
     }
@@ -391,6 +409,16 @@ http_request_parser::request_parse_result http_request_parser::parse_request_hea
     if( c == '\n' )
     {
         state_ = http_request_parser::parser_state::request_header_begin;
+        result = http_request_parser::request_parse_result::COMPLETE;
+    }
+    return result;
+}
+
+http_request_parser::request_parse_result http_request_parser::parse_request_end( const char &c ) noexcept
+{
+    auto result = http_request_parser::request_parse_result::ERROR;
+    if( c == '\n' )
+    {
         result = http_request_parser::request_parse_result::COMPLETE;
     }
     return result;

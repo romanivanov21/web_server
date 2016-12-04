@@ -1,3 +1,9 @@
+/**
+ *  Файл: unit_test.h
+ *
+ *  Описание: unit test библиотки http_lib
+ */
+
 #ifndef _UNIT_TESTS_H_
 #define _UNIT_TESTS_H_
 
@@ -13,6 +19,7 @@ TEST( request001, httpparsertest )
       "User-Agent: Mozilla/5.0\r\n"
       "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\n"
       "Host: web_server.ru\r\n"
+      "Connection: Keep-Alive\r\n"
       "\r\n";
     http_request parse_request;
     http_request_parser parser;
@@ -22,6 +29,7 @@ TEST( request001, httpparsertest )
     ASSERT_EQ( parse_request.headers_["User-Agent"], "Mozilla/5.0" );
     ASSERT_EQ( parse_request.headers_["Accept"], "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" );
     ASSERT_EQ( parse_request.headers_["Host"], "web_server.ru" );
+    ASSERT_EQ( parse_request.keep_alive_, true );
 }
 
 TEST( request002, http_version_test )
@@ -32,6 +40,7 @@ TEST( request002, http_version_test )
     http_request_parser::request_parse_result result1 = parser.parse( request1, parse_request );
     ASSERT_EQ( parse_request.version_major_, 1 );
     ASSERT_EQ( parse_request.version_minor_, 1 );
+    ASSERT_EQ( parse_request.keep_alive_, true );
 
     const std::string request2 = "GET /web_server.ru HTsdf/213.121";
     http_request_parser::request_parse_result result2 = parser.parse( request2, parse_request );
