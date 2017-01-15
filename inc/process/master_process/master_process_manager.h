@@ -9,7 +9,7 @@
 #ifndef _MASTER_PROCESS_MANAGER_H_
 #define _MASTER_PROCESS_MANAGER_H_
 
-class master_process_manager : public process_manager
+class master_process_manager
 {
 public:
     master_process_manager();

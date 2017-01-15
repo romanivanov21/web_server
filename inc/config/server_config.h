@@ -24,7 +24,7 @@ class server_config
      *
      * @return ссылка на единственный экземпля класса
      */
-    static server_config* get_instance() noexcept;
+    static server_config* get_instance();
 
     /**
      * @brief загрузка и чтение конфиг файла, для разбора используется python модуль,

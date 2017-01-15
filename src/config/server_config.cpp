@@ -16,6 +16,11 @@ server_config::server_config() noexcept
     if( cfg_ == nullptr )
     {
         cfg_ = new config_struct();
+        assert( cfg_ );
+        if( cfg_ == nullptr )
+        {
+            throw server_config_exception( msg_type::msg_system_error );
+        }
     }
 }
 
@@ -27,12 +32,16 @@ server_config::~server_config() noexcept
     }
 }
 
-server_config* server_config::get_instance() noexcept
+server_config* server_config::get_instance()
 {
     if( instance_ == nullptr )
     {
         instance_ = new server_config();
-        destroyer_.init_obj( instance_ );
+        assert( instance_ );
+        if( instance_ )
+            destroyer_.init_obj( instance_ );
+        else
+            throw server_config_exception( msg_type::msg_system_error );
     }
     return instance_;
 }

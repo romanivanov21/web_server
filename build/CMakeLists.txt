@@ -60,26 +60,31 @@ include_directories (
         ../inc/common/user_msg
         ../inc/config
         ../inc/logs
-        ../inc/connection
+        ../inc/network_api
+        ../inc/network_api/endpoint
+        ../inc/network_api/tcp_connection
         ../inc/process/daemon_process
         ../inc/process/master_process
         ../inc/process/worker_process
         ../inc/process
         ../inc/daemon
 )
+
 #файлы реализации программы web_server
-aux_source_directory( ../src WEB_SERVER_SRC )
-aux_source_directory( ../src/config WEB_SERVER_SRC )
-aux_source_directory( ../src/logs WEB_SERVER_SRC )
-aux_source_directory( ../src/connection WEB_SERVER_SRC )
-aux_source_directory( ../src/process WEB_SERVER_SRC )
-aux_source_directory( ../src/process/daemon_process WEB_SERVER_SRC )
-aux_source_directory( ../src/process/worker_process WEB_SERVER_SRC )
-aux_source_directory( ../src/process/master_process WEB_SERVER_SRC )
-aux_source_directory( ../src/common WEB_SERVER_SRC )
-aux_source_directory( ../src/daemon WEB_SERVER_SRC )
-aux_source_directory( ../src/common/user_msg WEB_SERVER_SRC )
-aux_source_directory( ../src/common/user_msg/en WEB_SERVER_SRC )
+aux_source_directory( ../src                            WEB_SERVER_SRC )
+aux_source_directory( ../src/config                     WEB_SERVER_SRC )
+aux_source_directory( ../src/logs                       WEB_SERVER_SRC )
+aux_source_directory( ../src/network_api                WEB_SERVER_SRC )
+aux_source_directory( ../src/network_api/tcp_connection WEB_SERVER_SRC )
+aux_source_directory( ../src/network_api/endpoint       WEB_SERVER_SRC )
+aux_source_directory( ../src/process                    WEB_SERVER_SRC )
+aux_source_directory( ../src/process/daemon_process     WEB_SERVER_SRC )
+aux_source_directory( ../src/process/worker_process     WEB_SERVER_SRC )
+aux_source_directory( ../src/process/master_process     WEB_SERVER_SRC )
+aux_source_directory( ../src/common                     WEB_SERVER_SRC )
+aux_source_directory( ../src/daemon                     WEB_SERVER_SRC )
+aux_source_directory( ../src/common/user_msg            WEB_SERVER_SRC )
+aux_source_directory( ../src/common/user_msg/en         WEB_SERVER_SRC )
 #исполняемый файл web_server
 add_executable( web_server ${WEB_SERVER_SRC} )
 #линковка исполняемого файла web_server с статическими библиотеками ( python2.7 libhttpparser )
