@@ -40,3 +40,23 @@ private:
 
 #endif //_EVENT_H
 #include "event_impl.h"
+
+/*
+ * usage
+ *
+ * void f()
+ * {
+ *     std::cout<<"callback f" << std::endl;
+ * }
+ *
+ * int main()
+ * {
+ *     event<void> e;
+ *     e.connect(&f);
+ *     e.connect([&](){ std::cout<<"callback lambda" << std::endl; })
+ *
+ *
+ *     e1.emit();
+ *     return 0;
+ * }
+ */
