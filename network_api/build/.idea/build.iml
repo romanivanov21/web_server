@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="CPP_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$/..">
+      <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../source/common/src/event_void_spec.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../source/main.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../source/connection/tcp_server.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../source/connection/joinable_thread.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../source/connection/tcp_connection/base_selector.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../source/connection/tcp_connection/tcp_slave_connection.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../source/connection/tcp_connection/base_server.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../source/connection/tcp_connection/tcp_master_connection.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../source/connection/tcp_connection/endpoint_ipv4.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../source/connection/tcp_connection/listen_thread.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../source/connection/tcp_connection/connection_error.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../source/connection/master_connection.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../source/connection/selector_epoll.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../source/connection/worker_thread.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../source/connection/base_network_error.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../source/http_session.cpp" isTestSource="false" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library name="Header Search Paths">
+        <CLASSES>
+          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.9/include" />
+          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.9/include-fixed" />
+          <root url="file:///usr/include" />
+          <root url="file:///usr/local/include" />
+          <root url="file://$USER_HOME$/.CLion2016.1/system/cmake/generated/build-82a5eae1/82a5eae1/MinSizeRel0" />
+          <root url="file://$USER_HOME$/.CLion2016.1/system/cmake/generated/build-82a5eae1/82a5eae1/Debug0" />
+          <root url="file://$USER_HOME$/.CLion2016.1/system/cmake/generated/build-82a5eae1/82a5eae1/Release0" />
+          <root url="file://$USER_HOME$/.CLion2016.1/system/cmake/generated/build-82a5eae1/82a5eae1/RelWithDebInfo0" />
+        </CLASSES>
+        <SOURCES>
+          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.9/include" />
+          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.9/include-fixed" />
+          <root url="file:///usr/include" />
+          <root url="file:///usr/local/include" />
+          <root url="file://$USER_HOME$/.CLion2016.1/system/cmake/generated/build-82a5eae1/82a5eae1/MinSizeRel0" />
+          <root url="file://$USER_HOME$/.CLion2016.1/system/cmake/generated/build-82a5eae1/82a5eae1/Debug0" />
+          <root url="file://$USER_HOME$/.CLion2016.1/system/cmake/generated/build-82a5eae1/82a5eae1/Release0" />
+          <root url="file://$USER_HOME$/.CLion2016.1/system/cmake/generated/build-82a5eae1/82a5eae1/RelWithDebInfo0" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+  </component>
+</module>
