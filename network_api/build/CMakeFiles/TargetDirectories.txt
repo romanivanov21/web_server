@@ -1,1 +1,0 @@
-/home/roman/work/C++ /network_api/build/CMakeFiles/network_api.dir
