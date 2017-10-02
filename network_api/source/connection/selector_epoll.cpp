@@ -76,7 +76,7 @@ void selector_epoll::check_data_ready
 
     if(errno != EAGAIN) error.emit(selector_error::UNKNOWN_ERROR);
 
-    for(size_t i = 0; i < n; i++)
+    for(auto i = 0; i < n; i++)
         data_ready.emit
           (d_->connections_[d_->events_[i].data.fd]);
 }

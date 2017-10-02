@@ -21,8 +21,7 @@ namespace network
 
         virtual void run() noexcept = 0;
 
-        void error_callback
-          (error_callback_function const& callback);
+        void error_callback(error_callback_function const&);
 
     protected:
         event<const base_network_error&> error;

@@ -1,34 +1,36 @@
 #include "http_session.h"
+#include "slave_connection.h"
 
 using namespace network;
 
-void http_session::init(const slave_connection_unique_ptr& connection)
+void http_session::init
+    (const slave_connection_unique_ptr& connection) noexcept
+{
+	
+}
+
+void http_session::on_error() noexcept
 {
 
 }
 
-void http_session::on_error() noexcept override
+void http_session::on_timeout() noexcept
 {
 
 }
 
-void http_session::on_timeout() noexcept override
-{
-
-}
-
-void http_session::done() noexcept override
+void http_session::done() noexcept
 {
 
 }
 
 void http_session::on_receive_data
-  (const byte_vector& buffer) noexcept override
+  (const byte_vector& buffer) noexcept
 {
 
 }
 
-void http_session::on_idle() noexcept override
+void http_session::on_idle() noexcept
 {
 
 }

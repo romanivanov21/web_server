@@ -8,7 +8,7 @@ namespace network
     class http_session : public base_user_session
     {
     public:
-        void init(const slave_connection_unique_ptr& connection) override;
+        void init(const slave_connection_unique_ptr& connection) noexcept override;
 
         void on_error() noexcept override;
 
@@ -23,4 +23,4 @@ namespace network
     };
 }
 
-#endif _HTTP_SESSION_H_
+#endif //_HTTP_SESSION_H_

@@ -2,8 +2,6 @@
 
 using network::base_selector;
 
-base_selector::~base_selector() = default;
-
 void base_selector::data_ready_callback
   (data_ready_function const& f) noexcept
 {

@@ -5,6 +5,8 @@
 #include "server_thread_traits.h"
 #include "worker_thread.h"
 #include "listen_thread.h"
+#include "base_selector.h"
+#include "base_server_thread.h"
 
 using namespace network;
 
@@ -28,7 +30,7 @@ tcp_server::impl::impl(endpoint_unique_ptr& ep) : ep_(ep) { }
 
 tcp_server::impl::~impl() = default;
 
-tcp_server::tcp_server
+/*tcp_server::tcp_server
   (base_selector_unique_ptr& selector, endpoint_unique_ptr& ep,
    base_user_session_ptr& session,
    std::size_t worker_thread_count) : d_(std::make_unique<impl>(ep))
@@ -39,21 +41,19 @@ tcp_server::tcp_server
         d_->worker_threads_count = worker_thread_count;
         d_->connection_queue_ = std::make_shared<slave_connection_queue>();
     }
-}
+}*/
 
-tcp_server::tcp_server(const tcp_server& other) = delete;
+//tcp_server::tcp_server(const tcp_server& other) = delete;
 
-tcp_server& tcp_server::operator=(const tcp_server& other) = delete;
+//tcp_server& tcp_server::operator=(const tcp_server& other) = delete;
 
 tcp_server::~tcp_server() = default;
 
 void tcp_server::run() noexcept
 {
-    if(!d_ || !d_->connection_queue_)
-    {
+    if(!d_ || !d_->connection_queue_) 
         error.emit({base_network_error::network_error_type::
                     memory_allocate_error}); return;
-    }
 
     base_server_thread_unique_ptr listen_thread_ptr =
       std::make_unique<listen_thread>(d_->ep_, d_->connection_queue_);

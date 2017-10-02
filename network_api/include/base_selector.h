@@ -20,7 +20,7 @@ namespace network
         using error_function =
         std::function<void(const network::selector_error&)>;
 
-        virtual ~base_selector();
+        virtual ~base_selector() = default;
 
         virtual void add_connection
           (const network::slave_connection_shared_ptr&) noexcept = 0;
@@ -36,7 +36,6 @@ namespace network
 
         void error_callback
           (error_function const& f) noexcept;
-
     protected:
         event<const network::slave_connection_shared_ptr&>
           data_ready;

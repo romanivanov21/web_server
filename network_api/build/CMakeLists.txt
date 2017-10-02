@@ -1,6 +1,6 @@
 cmake_minimum_required ( VERSION 3.2.2 )
 
-set( PROJECT NETWORK_API_TEST )
+set( PROJECT network_api_test )
 
 set ( CMAKE_CXX_STANDARD 14 )
 
@@ -25,9 +25,13 @@ else()
     SET( CMAKE_CXX_FLAGS_RELEASE "-O3 -g" )
 endif()
 
-file(GLOB_RECURSE NETWORK_API_TEST_HEADERS "/include/*.h")
-file(GLOB_RECURSE NETWORK_API_TEST_SOURCES "/source/*.h")
-file(GLOB_RECURSE NETWORK_API_TEST_SOURCES "/source/*.cpp")
+include_directories( "../include"                           GLOB_RECURSE_NETWORK_API_TEST_HEADERS )
+include_directories( "../include/tcp_connection"            GLOB_RECURSE_NETWORK_API_TEST_HEADERS )
+
+aux_source_directory( "../source/common"                    GLOB_RECURSE_NETWORK_API_TEST_SOURCES )
+aux_source_directory( "../source/connection"                GLOB_RECURSE_NETWORK_API_TEST_SOURCES )
+aux_source_directory( "../source/connection/tcp_connection" GLOB_RECURSE_NETWORK_API_TEST_SOURCES )
+aux_source_directory( "../source"                           GLOB_RECURSE_NETWORK_API_TEST_SOURCES )
 
 #путь к исполнеямым файлам
 set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin )
@@ -39,4 +43,4 @@ set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin )
 project( ${PROJECT} )
 
 #исполняемый файл network_api
-add_executable( ${PROJECT} ${NETWORK_API_TEST_HEADERS} ${NETWORK_API_TEST_SOURCES} )
+add_executable( ${PROJECT} ${GLOB_RECURSE_NETWORK_API_TEST_HEADERS} ${GLOB_RECURSE_NETWORK_API_TEST_SOURCES} )
