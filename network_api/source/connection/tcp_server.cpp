@@ -30,7 +30,7 @@ tcp_server::impl::impl(endpoint_unique_ptr& ep) : ep_(ep) { }
 
 tcp_server::impl::~impl() = default;
 
-/*tcp_server::tcp_server
+tcp_server::tcp_server
   (base_selector_unique_ptr& selector, endpoint_unique_ptr& ep,
    base_user_session_ptr& session,
    std::size_t worker_thread_count) : d_(std::make_unique<impl>(ep))
@@ -41,11 +41,7 @@ tcp_server::impl::~impl() = default;
         d_->worker_threads_count = worker_thread_count;
         d_->connection_queue_ = std::make_shared<slave_connection_queue>();
     }
-}*/
-
-//tcp_server::tcp_server(const tcp_server& other) = delete;
-
-//tcp_server& tcp_server::operator=(const tcp_server& other) = delete;
+}
 
 tcp_server::~tcp_server() = default;
 

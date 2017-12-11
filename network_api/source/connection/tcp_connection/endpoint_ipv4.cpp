@@ -16,7 +16,7 @@ struct endpoint_ipv4::impl
 };
 
 endpoint_ipv4::endpoint_ipv4(const std::string& ip_address,
-                             connection_port port) : d_(new impl())
+                             connection_port port) : d_(std::make_unique<impl>())
 {
     if(!d_) return;
 
@@ -30,7 +30,7 @@ endpoint_ipv4::endpoint_ipv4(const std::string& ip_address,
     d_->sock_address4_.sin_port = htons(port);
 }
 
-endpoint_ipv4::endpoint_ipv4(connection_port port) : d_(new impl())
+endpoint_ipv4::endpoint_ipv4(connection_port port) : d_(std::make_unique<impl>())
 {
     //!TODO: 65000
     assert((port > 0) && (port <= 65000));
@@ -41,10 +41,7 @@ endpoint_ipv4::endpoint_ipv4(connection_port port) : d_(new impl())
     d_->sock_address4_.sin_port = htons(port);
 }
 
-endpoint_ipv4::~endpoint_ipv4()
-{
-    delete d_;
-}
+endpoint_ipv4::~endpoint_ipv4() = default;
 
 std::string endpoint_ipv4::get_ip_address() noexcept
 {
@@ -73,35 +70,21 @@ struct sockaddr* endpoint_ipv4::get_sockaddr() noexcept
     return ( struct sockaddr* )&d_->sock_address4_;
 }
 
-endpoint_ipv4::endpoint_ipv4(const endpoint_ipv4& other) : d_(new impl())
+endpoint_ipv4::endpoint_ipv4(const endpoint_ipv4& rhs) : d_(nullptr)
 {
-    if(!d_) return;
-
-    std::memcpy(&d_->sock_address4_, &other.d_->sock_address4_,
-                    sizeof(d_->sock_address4_));
+    if(rhs.d_) { d_ = std::make_unique<impl>(*rhs.d_); }
 }
 
-endpoint_ipv4& endpoint_ipv4::operator=(const endpoint_ipv4& other)
+endpoint_ipv4& endpoint_ipv4::operator=(const endpoint_ipv4& rhs)
 {
-    if(this != &other)
-    {
-        std::memcpy(&d_->sock_address4_, &other.d_->sock_address4_,
-                    sizeof(d_->sock_address4_));
-    }
-    return *this;
+    if(!rhs.d_) d_.reset();
+    else if(!d_) d_ = std::make_unique<impl>(*rhs.d_);
+    else *d_ = *rhs.d_;
 }
 
-endpoint_ipv4::endpoint_ipv4(endpoint_ipv4&& other)
-{
-    d_ = other.d_;
-    other.d_ = nullptr;
-}
+endpoint_ipv4::endpoint_ipv4(endpoint_ipv4&& other) = default;
 
-endpoint_ipv4& endpoint_ipv4::operator=(endpoint_ipv4&& other)
-{
-    std::swap(d_, other.d_);
-    return *this;
-}
+endpoint_ipv4& endpoint_ipv4::operator=(endpoint_ipv4&& other) = default;
 
 socklen_t endpoint_ipv4::get_sockaddr_size() noexcept
 {

@@ -113,15 +113,15 @@ void on_server_error(const network::base_network_error& error)
 
 int main()
 {
-    /*network::endpoint_unique_ptr ep
+    network::endpoint_unique_ptr ep
       = std::make_unique<network::endpoint_ipv4>("127.0.0.1", 8080);
     network::base_selector_unique_ptr selector
       = std::make_unique<network::selector_epoll>();
 
     network::base_user_session_ptr session
       = std::make_unique<network::http_session>();
-    network::tcp_server s(selector, ep);
+    network::tcp_server s(selector, ep, session);
     s.error_callback(&on_server_error);
-    s.run();*/
+    s.run();
     return 0;
 }

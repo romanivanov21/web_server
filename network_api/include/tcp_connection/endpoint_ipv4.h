@@ -41,7 +41,7 @@ namespace network
         endpoint_ipv4& operator=(endpoint_ipv4&& other);
     private:
         struct impl;
-        impl * d_;
+        std::unique_ptr<impl> d_;
     };
 }
 
